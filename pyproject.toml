@@ -11,4 +11,4 @@ dependencies = [
 ]
 
 [project.scripts]
-ti = "ti.ti:main"
+ti = "ti.app:main"

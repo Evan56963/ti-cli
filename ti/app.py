@@ -2,6 +2,7 @@ import argparse
 from ti.services.stock_data_service import StockDataService
 from ti.utils.colors import Colors, colorize
 from ti.database.tables import create_tables, get_model_count, list_all_tables
+from ti.log import logger
 
 def main():
     parser = argparse.ArgumentParser(description="技術指標計算與交易訊號分析工具",add_help=False)
@@ -53,9 +54,9 @@ def main():
         service = StockDataService()
         
         if not args.symbols:
-            print("請提供至少一個股票代號")
-            print("範例: ti add 2330 --tw --1d")
-            print("      ti add AAPL --us --1h")
+            logger.warning("請提供至少一個股票代號")
+            logger.warning("範例: ti add 2330 --tw --1d")
+            logger.warning("      ti add AAPL --us --1h")
             return
 
         # 確定市場類型
@@ -75,7 +76,7 @@ def main():
         elif args.futures:
             market = 'futures'
         else:
-            print("請指定市場類型 (例: --tw, --us, --crypto)")
+            logger.warning("請指定市場類型 (例: --tw, --us, --crypto)")
             return
         
         # 確定時間選項
@@ -97,59 +98,59 @@ def main():
         elif args.__dict__.get('1mo'):
             interval = '1mo'
         else:
-            print("請指定時間選項 (例: --1d, --1h)")
+            logger.warning("請指定時間選項 (例: --1d, --1h)")
             return
         
         for symbol in args.symbols:
             try:
                 if args.start and args.end:
-                    print(f"正在處理 {symbol} ({market}, {interval})，日期範圍: {args.start} ~ {args.end}")
+                    logger.info(f"正在處理 {symbol} ({market}, {interval})，日期範圍: {args.start} ~ {args.end}")
                     result = service.fetch_and_store_range(symbol, market, interval, args.start, args.end)
-                    print(f"✓ {symbol} 技術指標資料已成功儲存")
-                    print(f"  - 獲取了 {result['data_count']} 筆股票數據")
-                    print(f"  - 計算了 {result['indicator_count']} 個技術指標")
-                    print(f"  - 檢測了 {result['pattern_count']} 筆K線型態資料")
-                    print(f"  - 數據已保存至資料表 {market}")
+                    logger.info(f"✓ {symbol} 技術指標資料已成功儲存")
+                    logger.info(f"獲取了 {result['data_count']} 筆股票數據")
+                    logger.info(f"計算了 {result['indicator_count']} 個技術指標")
+                    logger.info(f"檢測了 {result['pattern_count']} 筆K線型態資料")
+                    logger.info(f"數據已保存至資料表 {market}")
                 else:    
-                    print(f"正在處理 {symbol} ({market}, {interval})...")
+                    logger.info(f"正在處理 {symbol} ({market}, {interval})...")
                     result = service.fetch_and_store(symbol, market, interval)
-                    print(f"✓ {symbol} 技術指標資料已成功儲存")
-                    print(f"  - 獲取了 {result['data_count']} 筆股票數據")
-                    print(f"  - 計算了 {result['indicator_count']} 個技術指標")
-                    print(f"  - 檢測了 {result['pattern_count']} 筆K線型態資料")
-                    print(f"  - 數據已保存至資料表 {market}")
+                    logger.info(f"✓ {symbol} 技術指標資料已成功儲存")
+                    logger.info(f"獲取了 {result['data_count']} 筆股票數據")
+                    logger.info(f"計算了 {result['indicator_count']} 個技術指標")
+                    logger.info(f"檢測了 {result['pattern_count']} 筆K線型態資料")
+                    logger.info(f"數據已保存至資料表 {market}")
                 
-            except Exception as e:
-                print(f"✗ {symbol} 處理失敗: {str(e)}")
+            except:
+                logger.exception(f"✗ 處理 {symbol} 時發生錯誤")
     
     # 處理 db 子命令 - 資料庫管理
     if args.command == 'db':
         if args.init:
             try:
-                print("正在初始化資料庫...")
+                logger.info("正在初始化資料庫...")
                 create_tables()
-                print(f"✓ 資料庫初始化成功")
-                print(f"  已建立 {get_model_count()} 個市場資料表")
-            except Exception as e:
-                print(f"✗ 資料庫初始化失敗: {str(e)}")
+                logger.info(f"✓ 資料庫初始化成功")
+                logger.info(f"  已建立 {get_model_count()} 個市場資料表")
+            except:
+                logger.exception("✗ 資料庫初始化失敗")
         
         elif args.tables:
             try:
                 tables = list_all_tables()
                 
                 if tables:
-                    print(f"資料庫中的資料表 ({len(tables)} 個):")
+                    logger.info(f"資料庫中的資料表 ({len(tables)} 個):")
                     for i, table in enumerate(tables, 1):
-                        print(f"  {i}. {table}")
+                        logger.info(f"  {i}. {table}")
                 else:
-                    print("資料庫中沒有資料表，請先執行 'ti db --init' 初始化資料庫")
-            except Exception as e:
-                print(f"✗ 查詢資料表失敗: {str(e)}")
+                    logger.warning("資料庫中沒有資料表，請先執行 'ti db --init' 初始化資料庫")
+            except:
+                logger.exception("✗ 查詢資料表失敗")
         
         else:
-            print("請指定操作選項:")
-            print("  --init    初始化資料庫，建立所有資料表")
-            print("  --tables  列出當前資料庫的資料表")
+            logger.warning("請指定操作選項:")
+            logger.warning("  --init    初始化資料庫，建立所有資料表")
+            logger.warning("  --tables  列出當前資料庫的資料表")
         
 def show_help():
     help_text = f"""
