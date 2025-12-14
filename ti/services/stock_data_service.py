@@ -11,7 +11,7 @@ class StockDataService:
     def __init__(self):
         pass
     
-    def fetch_and_store(self, symbol: str, market: str, interval: str):
+    def fetch_and_store(self, symbol: str, market: str, interval: str) -> dict[str, int | str]:
         """獲取並儲存股票數據和技術指標"""
         # 格式化股票代號
         formatted_symbol = get_ticker_with_suffix(symbol, market)
@@ -44,7 +44,7 @@ class StockDataService:
             'saved_count': saved_count
         }
     
-    def fetch_and_store_range(self, symbol: str, market: str, interval: str, start_date: str, end_date: str):
+    def fetch_and_store_range(self, symbol: str, market: str, interval: str, start_date: str, end_date: str) -> dict[str, int | str]:  
         """根據日期範圍獲取並儲存股票數據和技術指標"""
         # 格式化股票代號
         formatted_symbol = get_ticker_with_suffix(symbol, market)

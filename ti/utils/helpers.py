@@ -19,13 +19,13 @@ PERIOD_MAP: dict[str, str] = {
     '1mo': '5y',
 }
 
-def get_ticker_with_suffix(ticker: str, market: str):
+def get_ticker_with_suffix(ticker: str, market: str) -> str:
         """根據市場格式化股票代號"""
         suffix = SUFFIX_MAP.get(market, '')
         if suffix and not ticker.endswith(suffix):
             return ticker + suffix
         return ticker
 
-def get_period_by_interval(interval):
+def get_period_by_interval(interval: str) -> str:
         """根據時間間隔設定獲取期間"""
         return PERIOD_MAP.get(interval, '1y')

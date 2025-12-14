@@ -4,7 +4,7 @@ from ti.utils.styles import Color, stylize
 
 class ColoredFormatter(logging.Formatter):
 
-    LEVEL_COLOR_MAP = {
+    LEVEL_COLOR_MAP: dict[int, Color] = {
         logging.DEBUG: Color.BRIGHT_WHITE,
         logging.INFO: Color.BRIGHT_GREEN,
         logging.WARNING: Color.BRIGHT_YELLOW,

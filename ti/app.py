@@ -27,14 +27,14 @@ def main():
     add_parser.add_argument('--futures', action='store_true', help='期貨')
 
     # 時間選項
-    add_parser.add_argument('--1m', action='store_true', help='1 分鐘數據')
-    add_parser.add_argument('--5m', action='store_true', help='5 分鐘數據')
-    add_parser.add_argument('--15m', action='store_true', help='15 分鐘數據')
-    add_parser.add_argument('--30m', action='store_true', help='30 分鐘數據')
-    add_parser.add_argument('--1h', action='store_true', help='1 小時數據')
-    add_parser.add_argument('--1d', action='store_true', help='1 天數據')
-    add_parser.add_argument('--1wk', action='store_true', help='1 週數據')
-    add_parser.add_argument('--1mo', action='store_true', help='1 月數據')
+    add_parser.add_argument('--1m', dest='m1', action='store_true', help='1 分鐘數據')
+    add_parser.add_argument('--5m', dest='m5', action='store_true', help='5 分鐘數據')
+    add_parser.add_argument('--15m', dest='m15', action='store_true', help='15 分鐘數據')
+    add_parser.add_argument('--30m', dest='m30', action='store_true', help='30 分鐘數據')
+    add_parser.add_argument('--1h', dest='h1', action='store_true', help='1 小時數據')
+    add_parser.add_argument('--1d', dest='d1', action='store_true', help='1 天數據')
+    add_parser.add_argument('--1wk', dest='wk1', action='store_true', help='1 週數據')
+    add_parser.add_argument('--1mo', dest='mo1', action='store_true', help='1 月數據')
     add_parser.add_argument('--start', type=str, help='開始日期 (YYYY-MM-DD)')
     add_parser.add_argument('--end', type=str, help='結束日期 (YYYY-MM-DD)')
 
@@ -81,21 +81,21 @@ def main():
         
         # 確定時間選項
         interval = None
-        if args.__dict__.get('1m'):
+        if args.m1:
             interval = '1m'
-        elif args.__dict__.get('5m'):
+        elif args.m5:
             interval = '5m'
-        elif args.__dict__.get('15m'):
+        elif args.m15:
             interval = '15m'
-        elif args.__dict__.get('30m'):
+        elif args.m30:
             interval = '30m'
-        elif args.__dict__.get('1h'):
+        elif args.h1:
             interval = '1h'
-        elif args.__dict__.get('1d'):
+        elif args.d1:
             interval = '1d'
-        elif args.__dict__.get('1wk'):
+        elif args.wk1:
             interval = '1wk'
-        elif args.__dict__.get('1mo'):
+        elif args.mo1:
             interval = '1mo'
         else:
             logger.warning("請指定時間選項 (例: --1d, --1h)")
