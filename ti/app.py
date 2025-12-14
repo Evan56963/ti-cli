@@ -157,57 +157,57 @@ def show_help():
 {colorize('Technical Indicators Analysis System', Colors.BOLD + Colors.CYAN)}
 
 {colorize('Basic Usage:', Colors.BOLD + Colors.YELLOW)}
-  {colorize('ti', Colors.GREEN)} {colorize('[command]', Colors.BLUE)} {colorize('[options]', Colors.MAGENTA)}
+  {colorize('ti', Colors.BRIGHT_GREEN)} {colorize('[command]', Colors.BRIGHT_BLUE)} {colorize('[options]', Colors.BRIGHT_MAGENTA)}
 
 {colorize('Subcommands:', Colors.BOLD + Colors.YELLOW)}
-  {colorize('ti add', Colors.GREEN)}                               Calculate technical indicators and analyze trading signals
-  {colorize('ti db', Colors.GREEN)}                                Database configuration and management
+  {colorize('ti add', Colors.BRIGHT_GREEN)}                               Calculate technical indicators and analyze trading signals
+  {colorize('ti db', Colors.BRIGHT_GREEN)}                                Database configuration and management
 {colorize('Technical Analysis:', Colors.BOLD + Colors.YELLOW)}
-  {colorize('ti add', Colors.GREEN)} {colorize('<stock_symbol>', Colors.BLUE)} {colorize('--<market>', Colors.MAGENTA)} {colorize('--<interval>', Colors.MAGENTA)}   Analyze stock with technical indicators
+  {colorize('ti add', Colors.BRIGHT_GREEN)} {colorize('<stock_symbol>', Colors.BRIGHT_BLUE)} {colorize('--<market>', Colors.BRIGHT_MAGENTA)} {colorize('--<interval>', Colors.BRIGHT_MAGENTA)}   Analyze stock with technical indicators
 
-{colorize('Market Options:', Colors.BOLD + Colors.YELLOW)}
-  {colorize('--tw', Colors.MAGENTA)}          Taiwan Stock Exchange
-  {colorize('--us', Colors.MAGENTA)}          US Stock Market
-  {colorize('--etf', Colors.MAGENTA)}         ETF
-  {colorize('--index', Colors.MAGENTA)}       Index
-  {colorize('--crypto', Colors.MAGENTA)}      Cryptocurrency
-  {colorize('--forex', Colors.MAGENTA)}       Foreign Exchange
-  {colorize('--futures', Colors.MAGENTA)}     Futures
+{colorize('Market Options:', Colors.BRIGHT_YELLOW)}
+  {colorize('--tw', Colors.BRIGHT_MAGENTA)}          Taiwan Stock Exchange
+  {colorize('--us', Colors.BRIGHT_MAGENTA)}          US Stock Market
+  {colorize('--etf', Colors.BRIGHT_MAGENTA)}         ETF
+  {colorize('--index', Colors.BRIGHT_MAGENTA)}       Index
+  {colorize('--crypto', Colors.BRIGHT_MAGENTA)}      Cryptocurrency
+  {colorize('--forex', Colors.BRIGHT_MAGENTA)}       Foreign Exchange
+  {colorize('--futures', Colors.BRIGHT_MAGENTA)}     Futures
 {colorize('Time Intervals:', Colors.BOLD + Colors.YELLOW)}
-  {colorize('--1m', Colors.MAGENTA)}          1 minute data
-  {colorize('--5m', Colors.MAGENTA)}          5 minutes data
-  {colorize('--15m', Colors.MAGENTA)}         15 minutes data
-  {colorize('--30m', Colors.MAGENTA)}         30 minutes data
-  {colorize('--1h', Colors.MAGENTA)}          1 hour data
-  {colorize('--1d', Colors.MAGENTA)}          1 day data
-  {colorize('--1wk', Colors.MAGENTA)}         1 week data
-  {colorize('--1mo', Colors.MAGENTA)}         1 month data
+  {colorize('--1m', Colors.BRIGHT_MAGENTA)}          1 minute data
+  {colorize('--5m', Colors.BRIGHT_MAGENTA)}          5 minutes data
+  {colorize('--15m', Colors.BRIGHT_MAGENTA)}         15 minutes data
+  {colorize('--30m', Colors.BRIGHT_MAGENTA)}         30 minutes data
+  {colorize('--1h', Colors.BRIGHT_MAGENTA)}          1 hour data
+  {colorize('--1d', Colors.BRIGHT_MAGENTA)}          1 day data
+  {colorize('--1wk', Colors.BRIGHT_MAGENTA)}         1 week data
+  {colorize('--1mo', Colors.BRIGHT_MAGENTA)}         1 month data
 
 {colorize('Date Range Options:', Colors.BOLD + Colors.YELLOW)}
-  {colorize('--start', Colors.MAGENTA)} {colorize('<date>', Colors.BLUE)}       Start date (YYYY-MM-DD format)
-  {colorize('--end', Colors.MAGENTA)} {colorize('<date>', Colors.BLUE)}         End date (YYYY-MM-DD format)
+  {colorize('--start', Colors.BRIGHT_MAGENTA)} {colorize('<date>', Colors.BRIGHT_BLUE)}       Start date (YYYY-MM-DD format)
+  {colorize('--end', Colors.BRIGHT_MAGENTA)} {colorize('<date>', Colors.BRIGHT_BLUE)}         End date (YYYY-MM-DD format)
 {colorize('Database Management:', Colors.BOLD + Colors.YELLOW)}
-  {colorize('ti db --init', Colors.GREEN)}                         Initialize database and create all tables
-  {colorize('ti db --tables', Colors.GREEN)}                       List all database tables
+  {colorize('ti db --init', Colors.BRIGHT_GREEN)}                         Initialize database and create all tables
+  {colorize('ti db --tables', Colors.BRIGHT_GREEN)}                       List all database tables
 
 {colorize('Usage Examples:', Colors.BOLD + Colors.YELLOW)}
   {colorize('# Initialize database', Colors.GRAY)}
-  {colorize('ti db --init', Colors.GREEN)}
+  {colorize('ti db --init', Colors.BRIGHT_GREEN)}
   
   {colorize('# Analyze Taiwan stocks', Colors.GRAY)}
-  {colorize('ti add 2330 --tw --1d', Colors.GREEN)}
-  {colorize('ti add 0050 --tw --1h', Colors.GREEN)}
+  {colorize('ti add 2330 --tw --1d', Colors.BRIGHT_GREEN)}
+  {colorize('ti add 0050 --tw --1h', Colors.BRIGHT_GREEN)}
   
   {colorize('# Analyze US stocks', Colors.GRAY)}
-  {colorize('ti add AAPL --us --1d', Colors.GREEN)}
-  {colorize('ti add TSLA --us --1h', Colors.GREEN)}
+  {colorize('ti add AAPL --us --1d', Colors.BRIGHT_GREEN)}
+  {colorize('ti add TSLA --us --1h', Colors.BRIGHT_GREEN)}
   
   {colorize('# Analyze multiple stocks', Colors.GRAY)}
-  {colorize('ti add 2330 0050 2454 --tw --1d', Colors.GREEN)}
-  {colorize('ti add AAPL MSFT GOOGL --us --1d', Colors.GREEN)}
+  {colorize('ti add 2330 0050 2454 --tw --1d', Colors.BRIGHT_GREEN)}
+  {colorize('ti add AAPL MSFT GOOGL --us --1d', Colors.BRIGHT_GREEN)}
   
   {colorize('# Analyze with date range', Colors.GRAY)}
-  {colorize('ti add 2330 --tw --1d --start 2024-01-01 --end 2024-12-31', Colors.GREEN)}
-  {colorize('ti add AAPL --us --1h --start 2024-06-01 --end 2024-06-30', Colors.GREEN)}
+  {colorize('ti add 2330 --tw --1d --start 2024-01-01 --end 2024-12-31', Colors.BRIGHT_GREEN)}
+  {colorize('ti add AAPL --us --1h --start 2024-06-01 --end 2024-06-30', Colors.BRIGHT_GREEN)}
 """
     print(help_text)
