@@ -23,6 +23,12 @@ class Style(StrEnum):
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     REVERSED = '\033[7m'
+    FAINT = '\033[2m'
+    ITALIC = '\033[3m'
+    BLINK = '\033[5m'
+    RAPID_BLINK = '\033[6m'
+    HIDDEN = '\033[8m'
+    STRIKE = '\033[9m'
 
 class BgColor(StrEnum):
     BLACK = '\033[40m'
