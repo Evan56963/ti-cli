@@ -1,6 +1,6 @@
 import argparse
 from ti.services.stock_data_service import StockDataService
-from ti.utils.colors import Colors, Styles, colorize
+from ti.utils.colors import Colors, Styles, stylize
 from ti.database.tables import create_tables, get_model_count, list_all_tables
 from ti.log import logger
 
@@ -154,60 +154,59 @@ def main():
         
 def show_help():
     help_text = f"""
-{colorize('Technical Indicators Analysis System', Styles.BOLD + Colors.CYAN)}
+{stylize('Technical Indicators Analysis System', Styles.BOLD + Colors.CYAN)}
 
-{colorize('Basic Usage:', Styles.BOLD + Colors.YELLOW)}
-  {colorize('ti', Colors.BRIGHT_GREEN)} {colorize('[command]', Colors.BRIGHT_BLUE)} {colorize('[options]', Colors.BRIGHT_MAGENTA)}
+{stylize('Basic Usage:', Styles.BOLD + Colors.YELLOW)}
+  {stylize('ti', Colors.BRIGHT_GREEN)} {stylize('[command]', Colors.BRIGHT_BLUE)} {stylize('[options]', Colors.BRIGHT_MAGENTA)}
 
-{colorize('Subcommands:', Styles.BOLD + Colors.YELLOW)}
-  {colorize('ti add', Colors.BRIGHT_GREEN)}                               Calculate technical indicators and analyze trading signals
-  {colorize('ti db', Colors.BRIGHT_GREEN)}                                Database configuration and management
-{colorize('Technical Analysis:', Styles.BOLD + Colors.YELLOW)}
-  {colorize('ti add', Colors.BRIGHT_GREEN)} {colorize('<stock_symbol>', Colors.BRIGHT_BLUE)} {colorize('--<market>', Colors.BRIGHT_MAGENTA)} {colorize('--<interval>', Colors.BRIGHT_MAGENTA)}   Analyze stock with technical indicators
+{stylize('Subcommands:', Styles.BOLD + Colors.YELLOW)}
+  {stylize('ti add', Colors.BRIGHT_GREEN)}                               Calculate technical indicators and analyze trading signals
+  {stylize('ti db', Colors.BRIGHT_GREEN)}                                Database configuration and management
+{stylize('Technical Analysis:', Styles.BOLD + Colors.YELLOW)}
+  {stylize('ti add', Colors.BRIGHT_GREEN)} {stylize('<stock_symbol>', Colors.BRIGHT_BLUE)} {stylize('--<market>', Colors.BRIGHT_MAGENTA)} {stylize('--<interval>', Colors.BRIGHT_MAGENTA)}   Analyze stock with technical indicators
 
-{colorize('Market Options:', Styles.BOLD + Colors.YELLOW)}
-  {colorize('--tw', Colors.BRIGHT_MAGENTA)}          Taiwan Stock Exchange
-  {colorize('--us', Colors.BRIGHT_MAGENTA)}          US Stock Market
-  {colorize('--etf', Colors.BRIGHT_MAGENTA)}         ETF
-  {colorize('--index', Colors.BRIGHT_MAGENTA)}       Index
-  {colorize('--crypto', Colors.BRIGHT_MAGENTA)}      Cryptocurrency
-  {colorize('--forex', Colors.BRIGHT_MAGENTA)}       Foreign Exchange
-  {colorize('--futures', Colors.BRIGHT_MAGENTA)}     Futures
-{colorize('Time Intervals:', Styles.BOLD + Colors.YELLOW)}
-  {colorize('--1m', Colors.BRIGHT_MAGENTA)}          1 minute data
-  {colorize('--5m', Colors.BRIGHT_MAGENTA)}          5 minutes data
-  {colorize('--15m', Colors.BRIGHT_MAGENTA)}         15 minutes data
-  {colorize('--30m', Colors.BRIGHT_MAGENTA)}         30 minutes data
-  {colorize('--1h', Colors.BRIGHT_MAGENTA)}          1 hour data
-  {colorize('--1d', Colors.BRIGHT_MAGENTA)}          1 day data
-  {colorize('--1wk', Colors.BRIGHT_MAGENTA)}         1 week data
-  {colorize('--1mo', Colors.BRIGHT_MAGENTA)}         1 month data
+{stylize('Market Options:', Styles.BOLD + Colors.YELLOW)}
+  {stylize('--tw', Colors.BRIGHT_MAGENTA)}          Taiwan Stock Exchange
+  {stylize('--us', Colors.BRIGHT_MAGENTA)}          US Stock Market
+  {stylize('--etf', Colors.BRIGHT_MAGENTA)}         ETF
+  {stylize('--index', Colors.BRIGHT_MAGENTA)}       Index
+  {stylize('--crypto', Colors.BRIGHT_MAGENTA)}      Cryptocurrency
+  {stylize('--forex', Colors.BRIGHT_MAGENTA)}       Foreign Exchange
+  {stylize('--futures', Colors.BRIGHT_MAGENTA)}     Futures
+{stylize('Time Intervals:', Styles.BOLD + Colors.YELLOW)}
+  {stylize('--1m', Colors.BRIGHT_MAGENTA)}          1 minute data
+  {stylize('--5m', Colors.BRIGHT_MAGENTA)}          5 minutes data
+  {stylize('--15m', Colors.BRIGHT_MAGENTA)}         15 minutes data
+  {stylize('--30m', Colors.BRIGHT_MAGENTA)}         30 minutes data
+  {stylize('--1h', Colors.BRIGHT_MAGENTA)}          1 hour data
+  {stylize('--1d', Colors.BRIGHT_MAGENTA)}          1 day data
+  {stylize('--1wk', Colors.BRIGHT_MAGENTA)}         1 week data
+  {stylize('--1mo', Colors.BRIGHT_MAGENTA)}         1 month data
+{stylize('Date Range Options:', Styles.BOLD + Colors.YELLOW)}
+  {stylize('--start', Colors.BRIGHT_MAGENTA)} {stylize('<date>', Colors.BRIGHT_BLUE)}       Start date (YYYY-MM-DD format)
+  {stylize('--end', Colors.BRIGHT_MAGENTA)} {stylize('<date>', Colors.BRIGHT_BLUE)}         End date (YYYY-MM-DD format)
+{stylize('Database Management:', Styles.BOLD + Colors.YELLOW)}
+  {stylize('ti db --init', Colors.BRIGHT_GREEN)}                         Initialize database and create all tables
+  {stylize('ti db --tables', Colors.BRIGHT_GREEN)}                       List all database tables
 
-{colorize('Date Range Options:', Styles.BOLD + Colors.YELLOW)}
-  {colorize('--start', Colors.BRIGHT_MAGENTA)} {colorize('<date>', Colors.BRIGHT_BLUE)}       Start date (YYYY-MM-DD format)
-  {colorize('--end', Colors.BRIGHT_MAGENTA)} {colorize('<date>', Colors.BRIGHT_BLUE)}         End date (YYYY-MM-DD format)
-{colorize('Database Management:', Styles.BOLD + Colors.YELLOW)}
-  {colorize('ti db --init', Colors.BRIGHT_GREEN)}                         Initialize database and create all tables
-  {colorize('ti db --tables', Colors.BRIGHT_GREEN)}                       List all database tables
-
-{colorize('Usage Examples:', Styles.BOLD + Colors.YELLOW)}
-  {colorize('# Initialize database', Colors.GRAY)}
-  {colorize('ti db --init', Colors.BRIGHT_GREEN)}
+{stylize('Usage Examples:', Styles.BOLD + Colors.YELLOW)}
+  {stylize('# Initialize database', Colors.GRAY)}
+  {stylize('ti db --init', Colors.BRIGHT_GREEN)}
   
-  {colorize('# Analyze Taiwan stocks', Colors.GRAY)}
-  {colorize('ti add 2330 --tw --1d', Colors.BRIGHT_GREEN)}
-  {colorize('ti add 0050 --tw --1h', Colors.BRIGHT_GREEN)}
+  {stylize('# Analyze Taiwan stocks', Colors.GRAY)}
+  {stylize('ti add 2330 --tw --1d', Colors.BRIGHT_GREEN)}
+  {stylize('ti add 0050 --tw --1h', Colors.BRIGHT_GREEN)}
   
-  {colorize('# Analyze US stocks', Colors.GRAY)}
-  {colorize('ti add AAPL --us --1d', Colors.BRIGHT_GREEN)}
-  {colorize('ti add TSLA --us --1h', Colors.BRIGHT_GREEN)}
+  {stylize('# Analyze US stocks', Colors.GRAY)}
+  {stylize('ti add AAPL --us --1d', Colors.BRIGHT_GREEN)}
+  {stylize('ti add TSLA --us --1h', Colors.BRIGHT_GREEN)}
   
-  {colorize('# Analyze multiple stocks', Colors.GRAY)}
-  {colorize('ti add 2330 0050 2454 --tw --1d', Colors.BRIGHT_GREEN)}
-  {colorize('ti add AAPL MSFT GOOGL --us --1d', Colors.BRIGHT_GREEN)}
+  {stylize('# Analyze multiple stocks', Colors.GRAY)}
+  {stylize('ti add 2330 0050 2454 --tw --1d', Colors.BRIGHT_GREEN)}
+  {stylize('ti add AAPL MSFT GOOGL --us --1d', Colors.BRIGHT_GREEN)}
   
-  {colorize('# Analyze with date range', Colors.GRAY)}
-  {colorize('ti add 2330 --tw --1d --start 2024-01-01 --end 2024-12-31', Colors.BRIGHT_GREEN)}
-  {colorize('ti add AAPL --us --1h --start 2024-06-01 --end 2024-06-30', Colors.BRIGHT_GREEN)}
+  {stylize('# Analyze with date range', Colors.GRAY)}
+  {stylize('ti add 2330 --tw --1d --start 2024-01-01 --end 2024-12-31', Colors.BRIGHT_GREEN)}
+  {stylize('ti add AAPL --us --1h --start 2024-06-01 --end 2024-06-30', Colors.BRIGHT_GREEN)}
 """
     print(help_text)

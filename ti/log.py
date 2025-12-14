@@ -1,6 +1,6 @@
 import logging
 from typing import override
-from ti.utils.colors import Colors, colorize
+from ti.utils.colors import Colors, stylize
 
 class ColoredFormatter(logging.Formatter):
 
@@ -13,16 +13,17 @@ class ColoredFormatter(logging.Formatter):
     }
 
     @override
-    def formatTime(self, record: logging.LogRecord, datefmt=None):
-         asctime = super().formatTime(record, datefmt)
-         return colorize(asctime, Colors.CYAN)
+    def formatTime(self, record: logging.LogRecord, datefmt=None) -> str:
+          asctime = super().formatTime(record, datefmt)
+         
+          return stylize(asctime, Colors.CYAN)
     
     @override
     def format(self, record: logging.LogRecord) -> str:
         color = self.LEVEL_COLOR_MAP.get(record.levelno, Colors.WHITE)
-        record.name = colorize(record.name, Colors.CYAN)
-        record.levelname = colorize(record.levelname, color)
-        record.msg = colorize(record.msg, Colors.WHITE)
+        record.name = stylize(record.name, Colors.CYAN)
+        record.levelname = stylize(record.levelname, color)
+        record.msg = stylize(record.msg, Colors.WHITE)
         
         return super().format(record)
 

@@ -24,7 +24,7 @@ class Styles(StrEnum):
     UNDERLINE = '\033[4m'
     REVERSED = '\033[7m'
 
-class Backgrounds(StrEnum):
+class BgColors(StrEnum):
     BLACK = '\033[40m'
     RED = '\033[41m'
     GREEN = '\033[42m'
@@ -42,5 +42,5 @@ class Backgrounds(StrEnum):
     BRIGHT_CYAN = '\033[106m'
     BRIGHT_WHITE = '\033[107m'
 
-def colorize(text:str, color:str) -> str:
+def stylize(text: str, color: Colors | BgColors | Styles) -> str:
     return f"{color}{text}{Styles.RESET}"
