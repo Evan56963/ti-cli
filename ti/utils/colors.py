@@ -1,9 +1,6 @@
 from enum import StrEnum
 
-# ANSI 顏色碼
 class Colors(StrEnum):
-    RESET = '\033[0m'
-    BOLD = '\033[1m'
     BLACK = '\033[30m'
     RED = '\033[31m'
     GREEN = '\033[32m'
@@ -21,5 +18,29 @@ class Colors(StrEnum):
     BRIGHT_CYAN = '\033[96m'
     BRIGHT_WHITE = '\033[97m'
 
+class Styles(StrEnum):
+    RESET = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    REVERSED = '\033[7m'
+
+class Backgrounds(StrEnum):
+    BLACK = '\033[40m'
+    RED = '\033[41m'
+    GREEN = '\033[42m'
+    YELLOW = '\033[43m'
+    BLUE = '\033[44m'
+    MAGENTA = '\033[45m'
+    CYAN = '\033[46m'
+    WHITE = '\033[47m'
+    GRAY = '\033[100m'
+    BRIGHT_RED = '\033[101m'
+    BRIGHT_GREEN = '\033[102m'
+    BRIGHT_YELLOW = '\033[103m'
+    BRIGHT_BLUE = '\033[104m'
+    BRIGHT_MAGENTA = '\033[105m'
+    BRIGHT_CYAN = '\033[106m'
+    BRIGHT_WHITE = '\033[107m'
+
 def colorize(text:str, color:str) -> str:
-    return f"{color}{text}{Colors.RESET}"
+    return f"{color}{text}{Styles.RESET}"

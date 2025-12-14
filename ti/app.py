@@ -1,6 +1,6 @@
 import argparse
 from ti.services.stock_data_service import StockDataService
-from ti.utils.colors import Colors, colorize
+from ti.utils.colors import Colors, Styles, colorize
 from ti.database.tables import create_tables, get_model_count, list_all_tables
 from ti.log import logger
 
@@ -154,18 +154,18 @@ def main():
         
 def show_help():
     help_text = f"""
-{colorize('Technical Indicators Analysis System', Colors.BOLD + Colors.CYAN)}
+{colorize('Technical Indicators Analysis System', Styles.BOLD + Colors.CYAN)}
 
-{colorize('Basic Usage:', Colors.BOLD + Colors.YELLOW)}
+{colorize('Basic Usage:', Styles.BOLD + Colors.YELLOW)}
   {colorize('ti', Colors.BRIGHT_GREEN)} {colorize('[command]', Colors.BRIGHT_BLUE)} {colorize('[options]', Colors.BRIGHT_MAGENTA)}
 
-{colorize('Subcommands:', Colors.BOLD + Colors.YELLOW)}
+{colorize('Subcommands:', Styles.BOLD + Colors.YELLOW)}
   {colorize('ti add', Colors.BRIGHT_GREEN)}                               Calculate technical indicators and analyze trading signals
   {colorize('ti db', Colors.BRIGHT_GREEN)}                                Database configuration and management
-{colorize('Technical Analysis:', Colors.BOLD + Colors.YELLOW)}
+{colorize('Technical Analysis:', Styles.BOLD + Colors.YELLOW)}
   {colorize('ti add', Colors.BRIGHT_GREEN)} {colorize('<stock_symbol>', Colors.BRIGHT_BLUE)} {colorize('--<market>', Colors.BRIGHT_MAGENTA)} {colorize('--<interval>', Colors.BRIGHT_MAGENTA)}   Analyze stock with technical indicators
 
-{colorize('Market Options:', Colors.BRIGHT_YELLOW)}
+{colorize('Market Options:', Styles.BOLD + Colors.YELLOW)}
   {colorize('--tw', Colors.BRIGHT_MAGENTA)}          Taiwan Stock Exchange
   {colorize('--us', Colors.BRIGHT_MAGENTA)}          US Stock Market
   {colorize('--etf', Colors.BRIGHT_MAGENTA)}         ETF
@@ -173,7 +173,7 @@ def show_help():
   {colorize('--crypto', Colors.BRIGHT_MAGENTA)}      Cryptocurrency
   {colorize('--forex', Colors.BRIGHT_MAGENTA)}       Foreign Exchange
   {colorize('--futures', Colors.BRIGHT_MAGENTA)}     Futures
-{colorize('Time Intervals:', Colors.BOLD + Colors.YELLOW)}
+{colorize('Time Intervals:', Styles.BOLD + Colors.YELLOW)}
   {colorize('--1m', Colors.BRIGHT_MAGENTA)}          1 minute data
   {colorize('--5m', Colors.BRIGHT_MAGENTA)}          5 minutes data
   {colorize('--15m', Colors.BRIGHT_MAGENTA)}         15 minutes data
@@ -183,14 +183,14 @@ def show_help():
   {colorize('--1wk', Colors.BRIGHT_MAGENTA)}         1 week data
   {colorize('--1mo', Colors.BRIGHT_MAGENTA)}         1 month data
 
-{colorize('Date Range Options:', Colors.BOLD + Colors.YELLOW)}
+{colorize('Date Range Options:', Styles.BOLD + Colors.YELLOW)}
   {colorize('--start', Colors.BRIGHT_MAGENTA)} {colorize('<date>', Colors.BRIGHT_BLUE)}       Start date (YYYY-MM-DD format)
   {colorize('--end', Colors.BRIGHT_MAGENTA)} {colorize('<date>', Colors.BRIGHT_BLUE)}         End date (YYYY-MM-DD format)
-{colorize('Database Management:', Colors.BOLD + Colors.YELLOW)}
+{colorize('Database Management:', Styles.BOLD + Colors.YELLOW)}
   {colorize('ti db --init', Colors.BRIGHT_GREEN)}                         Initialize database and create all tables
   {colorize('ti db --tables', Colors.BRIGHT_GREEN)}                       List all database tables
 
-{colorize('Usage Examples:', Colors.BOLD + Colors.YELLOW)}
+{colorize('Usage Examples:', Styles.BOLD + Colors.YELLOW)}
   {colorize('# Initialize database', Colors.GRAY)}
   {colorize('ti db --init', Colors.BRIGHT_GREEN)}
   
