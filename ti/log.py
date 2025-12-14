@@ -1,29 +1,29 @@
 import logging
 from typing import override
-from ti.utils.colors import Colors, stylize
+from ti.utils.styles import Color, stylize
 
 class ColoredFormatter(logging.Formatter):
 
     LEVEL_COLOR_MAP = {
-        logging.DEBUG: Colors.BRIGHT_WHITE,
-        logging.INFO: Colors.BRIGHT_GREEN,
-        logging.WARNING: Colors.BRIGHT_YELLOW,
-        logging.ERROR: Colors.BRIGHT_RED,
-        logging.CRITICAL: Colors.BRIGHT_MAGENTA,
+        logging.DEBUG: Color.BRIGHT_WHITE,
+        logging.INFO: Color.BRIGHT_GREEN,
+        logging.WARNING: Color.BRIGHT_YELLOW,
+        logging.ERROR: Color.BRIGHT_RED,
+        logging.CRITICAL: Color.BRIGHT_MAGENTA,
     }
 
     @override
     def formatTime(self, record: logging.LogRecord, datefmt=None) -> str:
           asctime = super().formatTime(record, datefmt)
          
-          return stylize(asctime, Colors.CYAN)
+          return stylize(asctime, Color.CYAN)
     
     @override
     def format(self, record: logging.LogRecord) -> str:
-        color = self.LEVEL_COLOR_MAP.get(record.levelno, Colors.WHITE)
-        record.name = stylize(record.name, Colors.CYAN)
+        color = self.LEVEL_COLOR_MAP.get(record.levelno, Color.WHITE)
+        record.name = stylize(record.name, Color.CYAN)
         record.levelname = stylize(record.levelname, color)
-        record.msg = stylize(record.msg, Colors.WHITE)
+        record.msg = stylize(record.msg, Color.WHITE)
         
         return super().format(record)
 

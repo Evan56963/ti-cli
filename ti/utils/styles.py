@@ -1,6 +1,6 @@
 from enum import StrEnum
 
-class Colors(StrEnum):
+class Color(StrEnum):
     BLACK = '\033[30m'
     RED = '\033[31m'
     GREEN = '\033[32m'
@@ -18,13 +18,13 @@ class Colors(StrEnum):
     BRIGHT_CYAN = '\033[96m'
     BRIGHT_WHITE = '\033[97m'
 
-class Styles(StrEnum):
+class Style(StrEnum):
     RESET = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     REVERSED = '\033[7m'
 
-class BgColors(StrEnum):
+class BgColor(StrEnum):
     BLACK = '\033[40m'
     RED = '\033[41m'
     GREEN = '\033[42m'
@@ -42,5 +42,5 @@ class BgColors(StrEnum):
     BRIGHT_CYAN = '\033[106m'
     BRIGHT_WHITE = '\033[107m'
 
-def stylize(text: str, color: Colors | BgColors | Styles) -> str:
-    return f"{color}{text}{Styles.RESET}"
+def stylize(text: str, color: Color | BgColor | Style) -> str:
+    return f"{color}{text}{Style.RESET}"
