@@ -1,4 +1,4 @@
-SUFFIX_MAP = {
+SUFFIX_MAP: dict[str, str] = {
     'tw': '.TW',
     'us': '',
     'etf': '',
@@ -8,7 +8,7 @@ SUFFIX_MAP = {
     'futures': '',
 }
 
-PERIOD_MAP = {
+PERIOD_MAP: dict[str, str] = {
     '1m': '7d',
     '5m': '7d',
     '15m': '7d',
