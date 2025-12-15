@@ -1,22 +1,22 @@
 import logging
 from typing import override
-from ti.utils.styles import Color, stylize
+from ti.utils.styles import Color, stylize, BgColor
 
 class ColoredFormatter(logging.Formatter):
 
     LEVEL_COLOR_MAP: dict[int, Color] = {
-        logging.DEBUG: Color.BRIGHT_WHITE,
-        logging.INFO: Color.BRIGHT_GREEN,
-        logging.WARNING: Color.BRIGHT_YELLOW,
-        logging.ERROR: Color.BRIGHT_RED,
-        logging.CRITICAL: Color.BRIGHT_MAGENTA,
+        logging.DEBUG: Color.BRIGHT_WHITE + BgColor.BRIGHT_BLUE,
+        logging.INFO: Color.BRIGHT_WHITE + BgColor.BRIGHT_GREEN,
+        logging.WARNING: Color.BRIGHT_WHITE + BgColor.YELLOW,
+        logging.ERROR: Color.BRIGHT_WHITE + BgColor.BRIGHT_RED,
+        logging.CRITICAL: Color.BRIGHT_WHITE + BgColor.BRIGHT_MAGENTA,
     }
 
     @override
     def formatTime(self, record: logging.LogRecord, datefmt=None) -> str:
           asctime = super().formatTime(record, datefmt)
          
-          return stylize(asctime, Color.CYAN)
+          return stylize(asctime, Color.GREEN)
     
     @override
     def format(self, record: logging.LogRecord) -> str:
@@ -32,6 +32,7 @@ logger = logging.getLogger("ti")
 logger.setLevel(logging.DEBUG)
 
 stream_handler = logging.StreamHandler()
+
 stream_handler.setLevel(logging.INFO)
 stream_handler.setFormatter(
     ColoredFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
