@@ -1,7 +1,8 @@
 from typing import Optional
-from enum import StrEnum
+from enum import StrEnum, unique
 from dataclasses import dataclass
 
+@unique
 class PatternType(StrEnum):
     REVERSAL = "反轉型態"
     CONTINUATION = "持續型態"

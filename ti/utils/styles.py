@@ -1,5 +1,6 @@
-from enum import StrEnum
+from enum import StrEnum, unique
 
+@unique
 class Color(StrEnum):
     BLACK = '\033[30m'
     RED = '\033[31m'
@@ -18,6 +19,7 @@ class Color(StrEnum):
     BRIGHT_CYAN = '\033[96m'
     BRIGHT_WHITE = '\033[97m'
 
+@unique
 class Style(StrEnum):
     RESET = '\033[0m'
     BOLD = '\033[1m'
@@ -30,6 +32,7 @@ class Style(StrEnum):
     HIDDEN = '\033[8m'
     STRIKE = '\033[9m'
 
+@unique
 class BgColor(StrEnum):
     BLACK = '\033[40m'
     RED = '\033[41m'
