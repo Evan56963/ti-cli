@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field, inspect
-from datetime import datetime as dt
+from datetime import datetime
 from typing import Optional
 from ti.database.connection import engine
 
@@ -9,7 +9,7 @@ class MarketDataBaseModel(SQLModel):
     id: Optional[int] = Field(default=None, primary_key=True)
     symbol: str = Field(max_length=20, index=True)
     interval: str = Field(max_length=10, index=True)
-    datetime: dt = Field(index=True)
+    timestamp: datetime = Field(index=True)
     
     # OHLCV 數據
     open: Optional[float] = Field(default=None, sa_column_kwargs={"name": "open"})
@@ -61,7 +61,7 @@ class MarketDataBaseModel(SQLModel):
     pattern_feature: Optional[str] = Field(default=None, max_length=500)
     
     # 最後更新時間
-    last_update: Optional[dt] = None
+    last_update: Optional[datetime] = None
 
 
 class StockDataTW(MarketDataBaseModel, table=True):
