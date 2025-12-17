@@ -2,8 +2,10 @@ from sqlmodel import Session, select
 from datetime import datetime
 from typing import Optional
 from ti.database.tables import MarketDataBaseModel, get_model_by_market
-from ti.database.connection import engine
+from ti.database.connection import getConnection
 import pandas as pd
+
+engine = getConnection()
 
 class StockDataRepository:
     """股票數據儲存庫 - 負責資料的增刪查改"""

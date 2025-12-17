@@ -1,5 +1,6 @@
 SUFFIX_MAP: dict[str, str] = {
     'tw': '.TW',
+    'two': '.TWO',
     'us': '',
     'etf': '',
     'index': '',

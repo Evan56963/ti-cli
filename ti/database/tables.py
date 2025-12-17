@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, Field, inspect
 from datetime import datetime
 from typing import Optional
-from ti.database.connection import engine
+from ti.database.connection import getConnection
 
 class MarketDataBaseModel(SQLModel):
     """數據基礎模型"""
@@ -90,6 +90,7 @@ class Futures(MarketDataBaseModel, table=True):
 # 市場映射字典
 MARKET_MODELS: dict[str, type[MarketDataBaseModel]] = {
     "tw": StockDataTW,
+    "two": StockDataTW,
     "us": StockDataUS,
     "crypto": Crypto,
     "index": Index,
@@ -97,6 +98,8 @@ MARKET_MODELS: dict[str, type[MarketDataBaseModel]] = {
     "forex": Forex,
     "futures": Futures,
 }
+
+engine = getConnection()
 
 def get_model_count() -> int:
     """返回市場模型的數量"""

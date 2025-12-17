@@ -30,15 +30,22 @@ class ColoredFormatter(logging.Formatter):
 
 logger = logging.getLogger("ti")
 logger.setLevel(logging.DEBUG)
-
 stream_handler = logging.StreamHandler()
-
 stream_handler.setLevel(logging.INFO)
 stream_handler.setFormatter(
     ColoredFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 )
 
+yf_logger = logging.getLogger("yfinance")
+yf_logger.setLevel(logging.WARNING)
+yf_stream_handler = logging.StreamHandler()
+yf_stream_handler.setLevel(logging.WARNING)
+yf_stream_handler.setFormatter(
+    ColoredFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+)
+
 logger.addHandler(stream_handler)
+yf_logger.addHandler(yf_stream_handler)
 
 
 # file_handler = logging.FileHandler("ti.log", mode='a')

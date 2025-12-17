@@ -1,5 +1,5 @@
 import argparse
-from ti.services.stock_data_service import StockDataService
+from ti.services import StockDataService
 from ti.utils.styles import Color, Style, stylize
 from ti.database.tables import create_tables, get_model_count, list_all_tables
 from ti.log import logger
@@ -19,6 +19,7 @@ def main():
     # 市場選項
     add_parser.add_argument('symbols', nargs='*', help='股票代碼列表 (例如: 2330 AAPL)')
     add_parser.add_argument('--tw', action='store_true', help='台股市場')
+    add_parser.add_argument('--two', action='store_true', help='台灣櫃買市場')
     add_parser.add_argument('--us', action='store_true', help='美股市場')
     add_parser.add_argument('--etf', action='store_true', help='ETF')
     add_parser.add_argument('--index', action='store_true', help='指數')
@@ -63,6 +64,8 @@ def main():
         market = None
         if args.tw:
             market = 'tw'
+        elif args.two:
+            market = 'two'
         elif args.us:
             market = 'us'
         elif args.etf:

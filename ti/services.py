@@ -1,4 +1,4 @@
-from ti.providers.stock_data_provider import StockDataProvider
+from ti.providers import StockDataProvider
 from ti.analyzers.indicator_calc import TechnicalIndicatorCalculator
 from ti.analyzers.candle_pattern import CandlePatternDetector
 from ti.database.repositories import StockDataRepository
@@ -75,3 +75,6 @@ class StockDataService:
             'pattern_count': (pattern_features != '').sum(),
             'saved_count': saved_count
         }
+
+class SignalService:
+    """交易信號服務"""
