@@ -2,3 +2,4 @@
 __pycache__/
 dist/
 ti_cli.egg-info/
+*.db

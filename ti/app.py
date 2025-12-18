@@ -1,11 +1,14 @@
 import argparse
+from ti.gui import Gui
 from ti.services import StockDataService
 from ti.utils.styles import Color, Style, stylize
-from ti.database.tables import create_tables, get_model_count, list_all_tables
+from ti.database import tables
 from ti.log import logger
 
 def main():
     parser = argparse.ArgumentParser(description="技術指標計算與交易訊號分析工具",add_help=False)
+
+    parser.add_argument('--gui', action='store_true', help='啟動圖形使用者介面 (GUI)')
 
     # 建立子命令
     subparsers = parser.add_subparsers(dest='command', help='可用命令')
@@ -45,6 +48,10 @@ def main():
     db_parser.add_argument('--tables', action='store_true', help='列出當前資料庫的資料表')
 
     args = parser.parse_args()
+
+    if args.gui:
+        Gui().run()
+        return
 
     if args.command == 'help' or args.command is None:
         show_help()
@@ -131,19 +138,19 @@ def main():
         if args.init:
             try:
                 logger.info("正在初始化資料庫...")
-                create_tables()
+                tables.create_tables()
                 logger.info(f"✓ 資料庫初始化成功")
-                logger.info(f"  已建立 {get_model_count()} 個市場資料表")
+                logger.info(f"  已建立 {tables.get_model_count()} 個市場資料表")
             except:
                 logger.exception("✗ 資料庫初始化失敗")
         
         elif args.tables:
             try:
-                tables = list_all_tables()
+                table = tables.list_all_tables()
                 
-                if tables:
-                    logger.info(f"資料庫中的資料表 ({len(tables)} 個):")
-                    for i, table in enumerate(tables, 1):
+                if table:
+                    logger.info(f"資料庫中的資料表 ({len(table)} 個):")
+                    for i, table in enumerate(table, 1):
                         logger.info(f"  {i}. {table}")
                 else:
                     logger.warning("資料庫中沒有資料表，請先執行 'ti db --init' 初始化資料庫")
@@ -213,3 +220,6 @@ def show_help():
   {stylize('ti add AAPL --us --1h --start 2024-06-01 --end 2024-06-30', Color.BRIGHT_GREEN)}
 """
     print(help_text)
+
+if __name__ == "__main__":
+    main()
