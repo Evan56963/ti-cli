@@ -134,7 +134,7 @@ def show_help():
 {stylize('Technical Analysis Options:', Style.BOLD + Color.YELLOW)}
   {stylize('--market, -m', Color.BRIGHT_MAGENTA)} {stylize('<market>', Color.BRIGHT_BLUE)}       Specify market type
   {stylize('--interval, -i', Color.BRIGHT_MAGENTA)} {stylize('<interval>', Color.BRIGHT_BLUE)}   Specify time interval
-  
+
 {stylize('Market Choices:', Style.BOLD + Color.YELLOW)}
   {stylize('tw', Color.BRIGHT_MAGENTA)}        Taiwan Stock Exchange
   {stylize('two', Color.BRIGHT_MAGENTA)}       Taiwan OTC Exchange
@@ -184,6 +184,3 @@ def show_help():
   {stylize('ti add AAPL -m us -i 1h --start 2024-06-01 --end 2024-06-30', Color.BRIGHT_GREEN)}
 """
     print(help_text)
-
-if __name__ == "__main__":
-    main()
