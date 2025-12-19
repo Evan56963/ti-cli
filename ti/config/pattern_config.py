@@ -1,14 +1,15 @@
 from typing import Optional
 from enum import StrEnum, unique
-from pydantic import BaseModel
+from dataclasses import dataclass
 
 @unique
 class PatternType(StrEnum):
     REVERSAL = "反轉型態"
     CONTINUATION = "持續型態"
     NEUTRAL = "中性型態"
-
-class CandlePattern(BaseModel):
+    
+@dataclass
+class CandlePattern():
     ta_function: str
     chinese_name: str
     pattern_type: PatternType

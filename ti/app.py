@@ -1,5 +1,5 @@
 import argparse
-from ti.gui import Gui
+from ti.gui.view import Gui
 from ti.services import StockDataService
 from ti.utils.styles import Color, Style, stylize
 from ti.database import tables
