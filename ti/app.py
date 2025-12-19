@@ -116,6 +116,7 @@ def show_help():
 {stylize('Basic Usage:', Style.BOLD + Color.YELLOW)}
   {stylize('ti', Color.BRIGHT_GREEN)} {stylize('[command]', Color.BRIGHT_BLUE)} {stylize('[options]', Color.BRIGHT_MAGENTA)}
   {stylize('ti --gui', Color.BRIGHT_GREEN)}                             Launch the graphical user interface (GUI)
+  {stylize('ti --help, -h', Color.BRIGHT_GREEN)}                        Show this help message
 
 {stylize('Subcommands:', Style.BOLD + Color.YELLOW)}
   {stylize('ti add', Color.BRIGHT_GREEN)}                               Calculate technical indicators and analyze trading signals
@@ -177,6 +178,3 @@ def show_help():
   {stylize('ti add AAPL -m us -i 1h --start 2024-06-01 --end 2024-06-30', Color.BRIGHT_GREEN)}
 """
     print(help_text)
-  
-if __name__ == "__main__":
-    main()
