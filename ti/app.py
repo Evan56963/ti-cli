@@ -6,35 +6,28 @@ from ti.database import tables
 from ti.log import logger
 
 def main():
-    parser = argparse.ArgumentParser(description="技術指標計算與交易訊號分析工具",add_help=False)
+    parser = argparse.ArgumentParser(description="Technical Indicators Analysis Tool",add_help=False)
 
-    parser.add_argument('--gui', action='store_true', help='啟動圖形使用者介面 (GUI)')
+    parser.add_argument('--gui', action='store_true', help='Launch graphical user interface (GUI)')
+    parser.add_argument('--help', '-h', action='store_true', help='Show this help message and exit')
 
     # 建立子命令
-    subparsers = parser.add_subparsers(dest='command', help='可用命令')
-
-    #幫助訊息
-    help_parser = subparsers.add_parser('help', help='顯示幫助訊息')
+    subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
     # add 子命令 - 計算技術指標並檢測k線型態
-    add_parser = subparsers.add_parser('add', help='計算技術指標並檢測k線型態')
-
-    add_parser.add_argument('symbols', nargs='*', help='股票代碼列表 (例如: 2330 AAPL)')
-
-    add_parser.add_argument('--market','-m', type=str, help='市場類型選項', 
+    add_parser = subparsers.add_parser('add', help='Calculate technical indicators and detect patterns')
+    add_parser.add_argument('symbols', nargs='*', help='Stock symbol list (e.g., 2330 AAPL)')
+    add_parser.add_argument('--start', '-s', type=str, help='Start date (YYYY-MM-DD)')
+    add_parser.add_argument('--end', '-e', type=str, help='End date (YYYY-MM-DD)')
+    add_parser.add_argument('--market','-m', type=str, help='Market type option', 
                             choices=['tw', 'two', 'us', 'etf', 'index', 'crypto', 'forex', 'futures'])
-    
-    add_parser.add_argument('--interval','-i', type=str, help='時間間隔選項',  
+    add_parser.add_argument('--interval','-i', type=str, help='Time interval option',  
                             choices=['1m', '5m', '15m', '30m', '1h', '1d', '1wk', '1mo'])
     
-    add_parser.add_argument('--start', '-s', type=str, help='開始日期 (YYYY-MM-DD)')
-    add_parser.add_argument('--end', '-e', type=str, help='結束日期 (YYYY-MM-DD)')
-
     # db 子命令 - 資料庫管理
-    db_parser = subparsers.add_parser('db', help='資料庫管理')
-
-    db_parser.add_argument('--init', action='store_true', help='初始化資料庫，建立所有資料表')
-    db_parser.add_argument('--list', '-l', action='store_true', help='列出當前資料庫的資料表')
+    db_parser = subparsers.add_parser('db', help='Database management')
+    db_parser.add_argument('--init', action='store_true', help='Initialize database and create all tables')
+    db_parser.add_argument('--list', '-l', action='store_true', help='List all database tables')
 
     args = parser.parse_args()
 
@@ -42,7 +35,7 @@ def main():
         Gui().run()
         return
 
-    if args.command == 'help' or args.command is None:
+    if args.help or args.command is None:
         show_help()
         return
     
@@ -51,70 +44,70 @@ def main():
         service = StockDataService()
         
         if not args.symbols:
-            logger.warning("請提供至少一個股票代號")
-            logger.warning("範例: ti add 2330 --tw --1d")
-            logger.warning("      ti add AAPL --us --1h")
+            logger.warning("Please provide at least one stock symbol")
+            logger.warning("Example: ti add 2330 -m tw -i 1d")
+            logger.warning("         ti add AAPL -m us -i 1h")
             return
         
         if not args.market:
-            logger.warning("請指定市場類型 (例: --tw, --us, --crypto)")
+            logger.warning("Please specify market type (e.g., -m tw, -m us, -m crypto)")
             return
         
         if not args.interval:
-            logger.warning("請指定時間選項 (例: --1d, --1h)")
+            logger.warning("Please specify time interval (e.g., -i 1d, -i 1h)")
             return
         
 
         for symbol in args.symbols:
             try:
                 if args.start and args.end:
-                    logger.info(f"正在處理 {symbol} ({args.market}, {args.interval})，日期範圍: {args.start} ~ {args.end}")
+                    logger.info(f"Processing {symbol} ({args.market}, {args.interval}), date range: {args.start} ~ {args.end}")
                     result = service.fetch_and_store_range(symbol, args.market, args.interval, args.start, args.end)
-                    logger.info(f"✓ {symbol} 技術指標資料已成功儲存")
-                    logger.info(f"獲取了 {result['data_count']} 筆股票數據")
-                    logger.info(f"計算了 {result['indicator_count']} 個技術指標")
-                    logger.info(f"檢測了 {result['pattern_count']} 筆K線型態資料")
-                    logger.info(f"數據已保存至資料表 {args.market}")
+                    logger.info(f"✓ {symbol} technical indicator data saved successfully")
+                    logger.info(f"Retrieved {result['data_count']} stock data records")
+                    logger.info(f"Calculated {result['indicator_count']} technical indicators")
+                    logger.info(f"Detected {result['pattern_count']} candlestick patterns")
+                    logger.info(f"Data saved to table '{args.market}'")
                 else:    
-                    logger.info(f"正在處理 {symbol} ({args.market}, {args.interval})...")
+                    logger.info(f"Processing {symbol} ({args.market}, {args.interval})...")
                     result = service.fetch_and_store(symbol, args.market, args.interval)
-                    logger.info(f"✓ {symbol} 技術指標資料已成功儲存")
-                    logger.info(f"獲取了 {result['data_count']} 筆股票數據")
-                    logger.info(f"計算了 {result['indicator_count']} 個技術指標")
-                    logger.info(f"檢測了 {result['pattern_count']} 筆K線型態資料")
-                    logger.info(f"數據已保存至資料表 {args.market}")
+                    logger.info(f"✓ {symbol} technical indicator data saved successfully")
+                    logger.info(f"Retrieved {result['data_count']} stock data records")
+                    logger.info(f"Calculated {result['indicator_count']} technical indicators")
+                    logger.info(f"Detected {result['pattern_count']} candlestick patterns")
+                    logger.info(f"Data saved to table '{args.market}'")
                 
             except:
-                logger.exception(f"✗ 處理 {symbol} 時發生錯誤")
+                logger.exception(f"✗ Error occurred while processing {symbol}")
     
     # db 子命令 - 資料庫管理
     if args.command == 'db':
         if args.init:
             try:
-                logger.info("正在初始化資料庫...")
+                logger.info("Initializing database...")
                 tables.create_tables()
-                logger.info(f"✓ 資料庫初始化成功")
-                logger.info(f"  已建立 {tables.get_model_count()} 個市場資料表")
+                logger.info(f"✓ Database initialized successfully")
+                logger.info(f"  Created {tables.get_model_count()} market tables")
             except:
-                logger.exception("✗ 資料庫初始化失敗")
+                logger.exception("✗ Database initialization failed")
         
         elif args.list:
             try:
                 table = tables.list_all_tables()
                 
                 if table:
-                    logger.info(f"資料庫中的資料表 ({len(table)} 個):")
+                    logger.info(f"Database tables ({len(table)} tables):")
                     for i, table in enumerate(table, 1):
                         logger.info(f"  {i}. {table}")
                 else:
-                    logger.warning("資料庫中沒有資料表，請先執行 'ti db --init' 初始化資料庫")
+                    logger.warning("No tables in database. Please run 'ti db --init' to initialize database")
             except:
-                logger.exception("✗ 查詢資料表失敗")
+                logger.exception("✗ Failed to query tables")
         
         else:
-            logger.warning("請指定操作選項:")
-            logger.warning("  --init    初始化資料庫，建立所有資料表")
-            logger.warning("  --tables  列出當前資料庫的資料表")
+            logger.warning("Please specify an operation:")
+            logger.warning("  --init    Initialize database and create all tables")
+            logger.warning("  --list    List all database tables")
         
 def show_help():
     help_text = f"""
@@ -184,3 +177,6 @@ def show_help():
   {stylize('ti add AAPL -m us -i 1h --start 2024-06-01 --end 2024-06-30', Color.BRIGHT_GREEN)}
 """
     print(help_text)
+  
+if __name__ == "__main__":
+    main()
