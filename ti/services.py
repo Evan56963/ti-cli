@@ -9,7 +9,7 @@ class StockDataService:
     """股票數據服務"""
 
     def __init__(self):
-        pass
+        self.detector = CandlePatternDetector()
     
     def fetch_and_store(self, symbol: str, market: str, interval: str) -> dict[str, int | str]:
         """獲取並儲存股票數據和技術指標"""
@@ -24,8 +24,7 @@ class StockDataService:
         indicators = TechnicalIndicatorCalculator.calculate_all_indicators(stock_data)
         
         # 檢測 K 線型態
-        pattern_features = CandlePatternDetector.detect_and_combine(stock_data)
-        pattern_features.name = 'pattern_feature'
+        pattern_features = self.detector.detect_and_combine(stock_data)
         
         # 合併所有數據
         combined_data = pd.concat([stock_data, indicators, pattern_features], axis=1)
@@ -56,9 +55,8 @@ class StockDataService:
         indicators = TechnicalIndicatorCalculator.calculate_all_indicators(stock_data)
         
         # 檢測 K 線型態
-        pattern_features = CandlePatternDetector.detect_and_combine(stock_data)
-        pattern_features.name = 'pattern_feature'
-        
+        pattern_features = self.detector.detect_and_combine(stock_data)
+            
         # 合併所有數據
         combined_data = pd.concat([stock_data, indicators, pattern_features], axis=1)
         

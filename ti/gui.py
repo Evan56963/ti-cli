@@ -1,35 +1,34 @@
 from enum import Enum, unique
-from dataclasses import dataclass
+from pydantic import BaseModel
 from dearpygui import dearpygui as dpg
 from ti.services import StockDataService
 from ti.database import tables
 
-@dataclass
-class Option:
+class Option(BaseModel):
     label: str
     value: str
 
 @unique
 class Market(Enum):
-    TAIWAN_STOCK = Option("Taiwan Stock (tw)", "tw")
-    OTC = Option("OTC (two)", "two")
-    US_STOCK = Option("US Stock (us)", "us")
-    ETF = Option("ETF", "etf")
-    INDEX = Option("Index", "index")
-    CRYPTO = Option("Crypto", "crypto")
-    FOREX = Option("Forex", "forex")
-    FUTURES = Option("Futures", "futures")
+    TAIWAN_STOCK = Option(label="Taiwan Stock (tw)", value="tw")
+    OTC = Option(label="OTC (two)", value="two")
+    US_STOCK = Option(label="US Stock (us)", value="us")
+    ETF = Option(label="ETF", value="etf")
+    INDEX = Option(label="Index", value="index")
+    CRYPTO = Option(label="Crypto", value="crypto")
+    FOREX = Option(label="Forex", value="forex")
+    FUTURES = Option(label="Futures", value="futures")
     
 @unique
 class Interval(Enum):
-    ONE_MINUTE = Option("1 Minute (1m)", "1m")
-    FIVE_MINUTES = Option("5 Minutes (5m)", "5m")
-    FIFTEEN_MINUTES = Option("15 Minutes (15m)", "15m")
-    THIRTY_MINUTES = Option("30 Minutes (30m)", "30m")
-    ONE_HOUR = Option("1 Hour (1h)", "1h")
-    ONE_DAY = Option("1 Day (1d)", "1d")
-    ONE_WEEK = Option("1 Week (1wk)", "1wk")
-    ONE_MONTH = Option("1 Month (1mo)", "1mo")
+    ONE_MINUTE = Option(label="1 Minute (1m)", value="1m")
+    FIVE_MINUTES = Option(label="5 Minutes (5m)", value="5m")
+    FIFTEEN_MINUTES = Option(label="15 Minutes (15m)", value="15m")
+    THIRTY_MINUTES = Option(label="30 Minutes (30m)", value="30m")
+    ONE_HOUR = Option(label="1 Hour (1h)", value="1h")
+    ONE_DAY = Option(label="1 Day (1d)", value="1d")
+    ONE_WEEK = Option(label="1 Week (1wk)", value="1wk")
+    ONE_MONTH = Option(label="1 Month (1mo)", value="1mo")
 
 service = StockDataService()
 

@@ -58,4 +58,6 @@ class CandlePatternDetector:
     def detect_and_combine(self,df: pd.DataFrame) -> pd.Series:
         """檢測型態並組合成字串"""
         pattern_df = self.detect_patterns(df)
-        return pattern_df.apply(self.combine_patterns, axis=1)
+        pattern_futures =pattern_df.apply(self.combine_patterns, axis=1)
+        pattern_futures.name = 'pattern_feature'
+        return pattern_futures
