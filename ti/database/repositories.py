@@ -1,11 +1,14 @@
 from sqlmodel import Session, select
 from datetime import datetime
-from typing import Optional
-from ti.database.tables import MarketDataBaseModel, get_model_by_market
-from ti.database.connection import getConnection
+from typing import Optional, TYPE_CHECKING
+from ti.database.tables import get_model_by_market
+from ti.database.connection import get_connection
 import pandas as pd
 
-engine = getConnection()
+if TYPE_CHECKING:
+    from ti.database.tables import MarketDataBaseModel
+
+engine = get_connection()
 
 class StockDataRepository:
     """股票數據儲存庫 - 負責資料的增刪查改"""

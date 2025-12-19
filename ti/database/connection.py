@@ -9,5 +9,5 @@ DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 engine = create_engine(DATABASE_URL, echo=False)
 
-def getConnection():
+def get_connection():
     return engine

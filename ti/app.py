@@ -19,33 +19,22 @@ def main():
     # add 子命令 - 計算技術指標並檢測k線型態
     add_parser = subparsers.add_parser('add', help='計算技術指標並檢測k線型態')
 
-    # 市場選項
     add_parser.add_argument('symbols', nargs='*', help='股票代碼列表 (例如: 2330 AAPL)')
-    add_parser.add_argument('--tw', action='store_true', help='台股市場')
-    add_parser.add_argument('--two', action='store_true', help='台灣櫃買市場')
-    add_parser.add_argument('--us', action='store_true', help='美股市場')
-    add_parser.add_argument('--etf', action='store_true', help='ETF')
-    add_parser.add_argument('--index', action='store_true', help='指數')
-    add_parser.add_argument('--crypto', action='store_true', help='加密貨幣')
-    add_parser.add_argument('--forex', action='store_true', help='外匯')
-    add_parser.add_argument('--futures', action='store_true', help='期貨')
 
-    # 時間選項
-    add_parser.add_argument('--1m', dest='m1', action='store_true', help='1 分鐘數據')
-    add_parser.add_argument('--5m', dest='m5', action='store_true', help='5 分鐘數據')
-    add_parser.add_argument('--15m', dest='m15', action='store_true', help='15 分鐘數據')
-    add_parser.add_argument('--30m', dest='m30', action='store_true', help='30 分鐘數據')
-    add_parser.add_argument('--1h', dest='h1', action='store_true', help='1 小時數據')
-    add_parser.add_argument('--1d', dest='d1', action='store_true', help='1 天數據')
-    add_parser.add_argument('--1wk', dest='wk1', action='store_true', help='1 週數據')
-    add_parser.add_argument('--1mo', dest='mo1', action='store_true', help='1 月數據')
-    add_parser.add_argument('--start', type=str, help='開始日期 (YYYY-MM-DD)')
-    add_parser.add_argument('--end', type=str, help='結束日期 (YYYY-MM-DD)')
+    add_parser.add_argument('--market','-m', type=str, help='市場類型選項', 
+                            choices=['tw', 'two', 'us', 'etf', 'index', 'crypto', 'forex', 'futures'])
+    
+    add_parser.add_argument('--interval','-i', type=str, help='時間間隔選項',  
+                            choices=['1m', '5m', '15m', '30m', '1h', '1d', '1wk', '1mo'])
+    
+    add_parser.add_argument('--start', '-s', type=str, help='開始日期 (YYYY-MM-DD)')
+    add_parser.add_argument('--end', '-e', type=str, help='結束日期 (YYYY-MM-DD)')
 
     # db 子命令 - 資料庫管理
     db_parser = subparsers.add_parser('db', help='資料庫管理')
+
     db_parser.add_argument('--init', action='store_true', help='初始化資料庫，建立所有資料表')
-    db_parser.add_argument('--tables', action='store_true', help='列出當前資料庫的資料表')
+    db_parser.add_argument('--list', '-l', action='store_true', help='列出當前資料庫的資料表')
 
     args = parser.parse_args()
 
@@ -66,39 +55,12 @@ def main():
             logger.warning("範例: ti add 2330 --tw --1d")
             logger.warning("      ti add AAPL --us --1h")
             return
-
-
-        market_mapping = {
-            'tw': args.tw,
-            'two': args.two,
-            'us': args.us,
-            'etf': args.etf,
-            'index': args.index,
-            'crypto': args.crypto,
-            'forex': args.forex,
-            'futures': args.futures
-        }
         
-        market = next((key for key, value in market_mapping.items() if value), None)
-        
-        if not market:
+        if not args.market:
             logger.warning("請指定市場類型 (例: --tw, --us, --crypto)")
             return
         
-        interval_mapping = {
-            '1m': args.m1,
-            '5m': args.m5,
-            '15m': args.m15,
-            '30m': args.m30,
-            '1h': args.h1,
-            '1d': args.d1,
-            '1wk': args.wk1,
-            '1mo': args.mo1
-        }
-        
-        interval = next((key for key, value in interval_mapping.items() if value), None)
-        
-        if not interval:
+        if not args.interval:
             logger.warning("請指定時間選項 (例: --1d, --1h)")
             return
         
@@ -106,21 +68,21 @@ def main():
         for symbol in args.symbols:
             try:
                 if args.start and args.end:
-                    logger.info(f"正在處理 {symbol} ({market}, {interval})，日期範圍: {args.start} ~ {args.end}")
-                    result = service.fetch_and_store_range(symbol, market, interval, args.start, args.end)
+                    logger.info(f"正在處理 {symbol} ({args.market}, {args.interval})，日期範圍: {args.start} ~ {args.end}")
+                    result = service.fetch_and_store_range(symbol, args.market, args.interval, args.start, args.end)
                     logger.info(f"✓ {symbol} 技術指標資料已成功儲存")
                     logger.info(f"獲取了 {result['data_count']} 筆股票數據")
                     logger.info(f"計算了 {result['indicator_count']} 個技術指標")
                     logger.info(f"檢測了 {result['pattern_count']} 筆K線型態資料")
-                    logger.info(f"數據已保存至資料表 {market}")
+                    logger.info(f"數據已保存至資料表 {args.market}")
                 else:    
-                    logger.info(f"正在處理 {symbol} ({market}, {interval})...")
-                    result = service.fetch_and_store(symbol, market, interval)
+                    logger.info(f"正在處理 {symbol} ({args.market}, {args.interval})...")
+                    result = service.fetch_and_store(symbol, args.market, args.interval)
                     logger.info(f"✓ {symbol} 技術指標資料已成功儲存")
                     logger.info(f"獲取了 {result['data_count']} 筆股票數據")
                     logger.info(f"計算了 {result['indicator_count']} 個技術指標")
                     logger.info(f"檢測了 {result['pattern_count']} 筆K線型態資料")
-                    logger.info(f"數據已保存至資料表 {market}")
+                    logger.info(f"數據已保存至資料表 {args.market}")
                 
             except:
                 logger.exception(f"✗ 處理 {symbol} 時發生錯誤")
@@ -136,7 +98,7 @@ def main():
             except:
                 logger.exception("✗ 資料庫初始化失敗")
         
-        elif args.tables:
+        elif args.list:
             try:
                 table = tables.list_all_tables()
                 
@@ -165,51 +127,63 @@ def show_help():
 {stylize('Subcommands:', Style.BOLD + Color.YELLOW)}
   {stylize('ti add', Color.BRIGHT_GREEN)}                               Calculate technical indicators and analyze trading signals
   {stylize('ti db', Color.BRIGHT_GREEN)}                                Database configuration and management
-{stylize('Technical Analysis:', Style.BOLD + Color.YELLOW)}
-  {stylize('ti add', Color.BRIGHT_GREEN)} {stylize('<stock_symbol>', Color.BRIGHT_BLUE)} {stylize('--<market>', Color.BRIGHT_MAGENTA)} {stylize('--<interval>', Color.BRIGHT_MAGENTA)}   Analyze stock with technical indicators
 
-{stylize('Market Options:', Style.BOLD + Color.YELLOW)}
-  {stylize('--tw', Color.BRIGHT_MAGENTA)}          Taiwan Stock Exchange
-  {stylize('--us', Color.BRIGHT_MAGENTA)}          US Stock Market
-  {stylize('--etf', Color.BRIGHT_MAGENTA)}         ETF
-  {stylize('--index', Color.BRIGHT_MAGENTA)}       Index
-  {stylize('--crypto', Color.BRIGHT_MAGENTA)}      Cryptocurrency
-  {stylize('--forex', Color.BRIGHT_MAGENTA)}       Foreign Exchange
-  {stylize('--futures', Color.BRIGHT_MAGENTA)}     Futures
-{stylize('Time Intervals:', Style.BOLD + Color.YELLOW)}
-  {stylize('--1m', Color.BRIGHT_MAGENTA)}          1 minute data
-  {stylize('--5m', Color.BRIGHT_MAGENTA)}          5 minutes data
-  {stylize('--15m', Color.BRIGHT_MAGENTA)}         15 minutes data
-  {stylize('--30m', Color.BRIGHT_MAGENTA)}         30 minutes data
-  {stylize('--1h', Color.BRIGHT_MAGENTA)}          1 hour data
-  {stylize('--1d', Color.BRIGHT_MAGENTA)}          1 day data
-  {stylize('--1wk', Color.BRIGHT_MAGENTA)}         1 week data
-  {stylize('--1mo', Color.BRIGHT_MAGENTA)}         1 month data
+{stylize('Technical Analysis:', Style.BOLD + Color.YELLOW)}
+  {stylize('ti add', Color.BRIGHT_GREEN)} {stylize('<stock_symbol>', Color.BRIGHT_BLUE)} {stylize('-m <market>', Color.BRIGHT_MAGENTA)} {stylize('-i <interval>', Color.BRIGHT_MAGENTA)}   Analyze stock with technical indicators
+
+{stylize('Technical Analysis Options:', Style.BOLD + Color.YELLOW)}
+  {stylize('--market, -m', Color.BRIGHT_MAGENTA)} {stylize('<market>', Color.BRIGHT_BLUE)}       Specify market type
+  {stylize('--interval, -i', Color.BRIGHT_MAGENTA)} {stylize('<interval>', Color.BRIGHT_BLUE)}   Specify time interval
+  
+{stylize('Market Choices:', Style.BOLD + Color.YELLOW)}
+  {stylize('tw', Color.BRIGHT_MAGENTA)}        Taiwan Stock Exchange
+  {stylize('two', Color.BRIGHT_MAGENTA)}       Taiwan OTC Exchange
+  {stylize('us', Color.BRIGHT_MAGENTA)}        US Stock Market
+  {stylize('etf', Color.BRIGHT_MAGENTA)}       ETF
+  {stylize('index', Color.BRIGHT_MAGENTA)}     Index
+  {stylize('crypto', Color.BRIGHT_MAGENTA)}    Cryptocurrency
+  {stylize('forex', Color.BRIGHT_MAGENTA)}     Foreign Exchange
+  {stylize('futures', Color.BRIGHT_MAGENTA)}   Futures
+
+{stylize('Time Interval Choices:', Style.BOLD + Color.YELLOW)}
+  {stylize('1m', Color.BRIGHT_MAGENTA)}      1 minute data
+  {stylize('5m', Color.BRIGHT_MAGENTA)}      5 minutes data
+  {stylize('15m', Color.BRIGHT_MAGENTA)}     15 minutes data
+  {stylize('30m', Color.BRIGHT_MAGENTA)}     30 minutes data
+  {stylize('1h', Color.BRIGHT_MAGENTA)}      1 hour data
+  {stylize('1d', Color.BRIGHT_MAGENTA)}      1 day data
+  {stylize('1wk', Color.BRIGHT_MAGENTA)}     1 week data
+  {stylize('1mo', Color.BRIGHT_MAGENTA)}     1 month data
+
 {stylize('Date Range Options:', Style.BOLD + Color.YELLOW)}
-  {stylize('--start', Color.BRIGHT_MAGENTA)} {stylize('<date>', Color.BRIGHT_BLUE)}       Start date (YYYY-MM-DD format)
-  {stylize('--end', Color.BRIGHT_MAGENTA)} {stylize('<date>', Color.BRIGHT_BLUE)}         End date (YYYY-MM-DD format)
-{stylize('Database Management:', Style.BOLD + Color.YELLOW)}
-  {stylize('ti db --init', Color.BRIGHT_GREEN)}                         Initialize database and create all tables
-  {stylize('ti db --tables', Color.BRIGHT_GREEN)}                       List all database tables
+  {stylize('-s, --start', Color.BRIGHT_MAGENTA)} {stylize('<date>', Color.BRIGHT_BLUE)}    Start date (YYYY-MM-DD format)
+  {stylize('-e, --end', Color.BRIGHT_MAGENTA)} {stylize('<date>', Color.BRIGHT_BLUE)}      End date (YYYY-MM-DD format)
+
+{stylize('Database Options:', Style.BOLD + Color.YELLOW)}
+  {stylize('--init', Color.BRIGHT_GREEN)}                             Initialize database and create all tables
+  {stylize('--list, -l', Color.BRIGHT_GREEN)}                         List all database tables
 
 {stylize('Usage Examples:', Style.BOLD + Color.YELLOW)}
   {stylize('# Initialize database', Color.GRAY)}
   {stylize('ti db --init', Color.BRIGHT_GREEN)}
   
   {stylize('# Analyze Taiwan stocks', Color.GRAY)}
-  {stylize('ti add 2330 --tw --1d', Color.BRIGHT_GREEN)}
-  {stylize('ti add 0050 --tw --1h', Color.BRIGHT_GREEN)}
+  {stylize('ti add 2330 -m tw -i 1d', Color.BRIGHT_GREEN)}
+  {stylize('ti add 0050 --market tw --interval 1h', Color.BRIGHT_GREEN)}
   
   {stylize('# Analyze US stocks', Color.GRAY)}
-  {stylize('ti add AAPL --us --1d', Color.BRIGHT_GREEN)}
-  {stylize('ti add TSLA --us --1h', Color.BRIGHT_GREEN)}
+  {stylize('ti add AAPL -m us -i 1d', Color.BRIGHT_GREEN)}
+  {stylize('ti add TSLA --market us --interval 1h', Color.BRIGHT_GREEN)}
   
   {stylize('# Analyze multiple stocks', Color.GRAY)}
-  {stylize('ti add 2330 0050 2454 --tw --1d', Color.BRIGHT_GREEN)}
-  {stylize('ti add AAPL MSFT GOOGL --us --1d', Color.BRIGHT_GREEN)}
+  {stylize('ti add 2330 0050 2454 -m tw -i 1d', Color.BRIGHT_GREEN)}
+  {stylize('ti add AAPL MSFT GOOGL -m us -i 1d', Color.BRIGHT_GREEN)}
   
   {stylize('# Analyze with date range', Color.GRAY)}
-  {stylize('ti add 2330 --tw --1d --start 2024-01-01 --end 2024-12-31', Color.BRIGHT_GREEN)}
-  {stylize('ti add AAPL --us --1h --start 2024-06-01 --end 2024-06-30', Color.BRIGHT_GREEN)}
+  {stylize('ti add 2330 -m tw -i 1d -s 2024-01-01 -e 2024-12-31', Color.BRIGHT_GREEN)}
+  {stylize('ti add AAPL -m us -i 1h --start 2024-06-01 --end 2024-06-30', Color.BRIGHT_GREEN)}
 """
     print(help_text)
+
+if __name__ == "__main__":
+    main()
