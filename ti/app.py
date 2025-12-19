@@ -57,7 +57,7 @@ def main():
         show_help()
         return
     
-    # 處理 add 子命令 - 計算技術指標並分析檢測k線型態
+    # add 子命令 - 計算技術指標並分析檢測k線型態
     if args.command == 'add':
         service = StockDataService()
         
@@ -67,50 +67,42 @@ def main():
             logger.warning("      ti add AAPL --us --1h")
             return
 
-        # 確定市場類型
-        market = None
-        if args.tw:
-            market = 'tw'
-        elif args.two:
-            market = 'two'
-        elif args.us:
-            market = 'us'
-        elif args.etf:
-            market = 'etf'
-        elif args.index:
-            market = 'index'
-        elif args.crypto:
-            market = 'crypto'
-        elif args.forex:
-            market = 'forex'
-        elif args.futures:
-            market = 'futures'
-        else:
+
+        market_mapping = {
+            'tw': args.tw,
+            'two': args.two,
+            'us': args.us,
+            'etf': args.etf,
+            'index': args.index,
+            'crypto': args.crypto,
+            'forex': args.forex,
+            'futures': args.futures
+        }
+        
+        market = next((key for key, value in market_mapping.items() if value), None)
+        
+        if not market:
             logger.warning("請指定市場類型 (例: --tw, --us, --crypto)")
             return
         
-        # 確定時間選項
-        interval = None
-        if args.m1:
-            interval = '1m'
-        elif args.m5:
-            interval = '5m'
-        elif args.m15:
-            interval = '15m'
-        elif args.m30:
-            interval = '30m'
-        elif args.h1:
-            interval = '1h'
-        elif args.d1:
-            interval = '1d'
-        elif args.wk1:
-            interval = '1wk'
-        elif args.mo1:
-            interval = '1mo'
-        else:
+        interval_mapping = {
+            '1m': args.m1,
+            '5m': args.m5,
+            '15m': args.m15,
+            '30m': args.m30,
+            '1h': args.h1,
+            '1d': args.d1,
+            '1wk': args.wk1,
+            '1mo': args.mo1
+        }
+        
+        interval = next((key for key, value in interval_mapping.items() if value), None)
+        
+        if not interval:
             logger.warning("請指定時間選項 (例: --1d, --1h)")
             return
         
+
         for symbol in args.symbols:
             try:
                 if args.start and args.end:
@@ -133,7 +125,7 @@ def main():
             except:
                 logger.exception(f"✗ 處理 {symbol} 時發生錯誤")
     
-    # 處理 db 子命令 - 資料庫管理
+    # db 子命令 - 資料庫管理
     if args.command == 'db':
         if args.init:
             try:
@@ -168,6 +160,7 @@ def show_help():
 
 {stylize('Basic Usage:', Style.BOLD + Color.YELLOW)}
   {stylize('ti', Color.BRIGHT_GREEN)} {stylize('[command]', Color.BRIGHT_BLUE)} {stylize('[options]', Color.BRIGHT_MAGENTA)}
+  {stylize('ti --gui', Color.BRIGHT_GREEN)}                             Launch the graphical user interface (GUI)
 
 {stylize('Subcommands:', Style.BOLD + Color.YELLOW)}
   {stylize('ti add', Color.BRIGHT_GREEN)}                               Calculate technical indicators and analyze trading signals
@@ -220,6 +213,3 @@ def show_help():
   {stylize('ti add AAPL --us --1h --start 2024-06-01 --end 2024-06-30', Color.BRIGHT_GREEN)}
 """
     print(help_text)
-
-if __name__ == "__main__":
-    main()

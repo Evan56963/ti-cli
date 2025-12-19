@@ -87,7 +87,7 @@ class Forex(MarketDataBaseModel, table=True):
 class Futures(MarketDataBaseModel, table=True):
     """期貨數據表"""
 
-# 市場映射字典
+
 MARKET_MODELS: dict[str, type[MarketDataBaseModel]] = {
     "tw": StockDataTW,
     "two": StockDataTW,

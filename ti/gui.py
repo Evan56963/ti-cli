@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, unique
 from dataclasses import dataclass
 from dearpygui import dearpygui as dpg
 from ti.services import StockDataService
@@ -9,6 +9,7 @@ class Option:
     label: str
     value: str
 
+@unique
 class Market(Enum):
     TAIWAN_STOCK = Option("Taiwan Stock (tw)", "tw")
     OTC = Option("OTC (two)", "two")
@@ -18,7 +19,8 @@ class Market(Enum):
     CRYPTO = Option("Crypto", "crypto")
     FOREX = Option("Forex", "forex")
     FUTURES = Option("Futures", "futures")
-
+    
+@unique
 class Interval(Enum):
     ONE_MINUTE = Option("1 Minute (1m)", "1m")
     FIVE_MINUTES = Option("5 Minutes (5m)", "5m")

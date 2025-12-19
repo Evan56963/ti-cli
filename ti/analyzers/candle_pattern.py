@@ -29,8 +29,8 @@ class CandlePatternDetector:
         
         return result_df
     
-    @staticmethod
-    def combine_patterns(row: pd.Series) -> str:
+    
+    def combine_patterns(self, row: pd.Series) -> str:
         """將檢測到的型態組合成字串"""              
 
         signals = []
@@ -54,8 +54,8 @@ class CandlePatternDetector:
         
         return ','.join(signals) if signals else ''
     
-    @staticmethod
-    def detect_and_combine(df: pd.DataFrame) -> pd.Series:
+
+    def detect_and_combine(self,df: pd.DataFrame) -> pd.Series:
         """檢測型態並組合成字串"""
-        pattern_df = CandlePatternDetector.detect_patterns(df)
-        return pattern_df.apply(CandlePatternDetector.combine_patterns, axis=1)
+        pattern_df = self.detect_patterns(df)
+        return pattern_df.apply(self.combine_patterns, axis=1)
