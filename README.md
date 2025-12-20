@@ -2,7 +2,7 @@
 
 ```powershell
 
-ti help
+ti --help
 ```
 
 ### 技術指標計算
