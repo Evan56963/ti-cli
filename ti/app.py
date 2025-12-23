@@ -178,3 +178,12 @@ def show_help():
   {stylize('ti add AAPL -m us -i 1h --start 2024-06-01 --end 2024-06-30', Color.BRIGHT_GREEN)}
 """
     print(help_text)
+
+if __name__ == "__main__":
+    """This is for running the application directly.
+    Usage:
+        python -m ti.app [--gui] [--help]
+        python -m ti.app add <symbols> -m <market> -i <interval> [--start <date>] [--end <date>]
+        python -m ti.app db [--init] [--list]
+    """
+    main()
