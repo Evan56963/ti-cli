@@ -1,11 +1,11 @@
-from ti.services import StockDataService
+from ti.services import MarketService
 from ti.database import tables
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .components import InputComponents, OutputComponents
 
-service = StockDataService()
+service = MarketService()
 
 class Controller:
     
@@ -20,7 +20,7 @@ class Controller:
         self.output.clear()
 
     def get_user_inputs(self) -> tuple[list[str], str | None, str | None, str, str]:
-        """獲取使用者輸入"""
+        """Get user inputs"""
         symbols = self.input.get_symbols()
         market = self.input.get_market()
         interval = self.input.get_interval()
@@ -29,7 +29,7 @@ class Controller:
         return symbols, market, interval, start_date, end_date
     
     def validate_inputs(self, symbols, market, interval):
-        """驗證使用者輸入"""
+        """Validate user inputs"""
         if not symbols:
             self.output.append("Please enter at least one stock symbol")
             return False
@@ -45,7 +45,7 @@ class Controller:
         return True
     
     def process_single_symbol(self,symbol, market, interval, start_date, end_date):
-        """處理單一股票代碼"""
+        """Process single stock symbol"""
         try:
             self.output.append(f"\nProcessing {symbol} ({market}, {interval})...")
             
@@ -65,7 +65,7 @@ class Controller:
             self.output.append(f"✗ Error processing {symbol}: {str(e)}")
     
     def analyze_stocks(self):
-        """執行股票分析"""
+        """Execute stock analysis"""
         self.clear()
         
         symbols, market, interval, start_date, end_date = self.get_user_inputs()
@@ -77,7 +77,7 @@ class Controller:
             self.process_single_symbol(symbol, market, interval, start_date, end_date)
     
     def init_database(self):
-        """初始化資料庫"""
+        """Initialize database"""
         self.output.clear()
         try:
             self.output.append("Initializing database...")
@@ -89,7 +89,7 @@ class Controller:
             self.output.append(f"✗ Database initialization failed: {str(e)}")
     
     def list_tables(self):
-        """列出所有資料表"""
+        """List all tables"""
         self.output.clear()
         try:
             tables_list = tables.list_all_tables()

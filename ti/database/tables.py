@@ -4,88 +4,88 @@ from typing import Optional
 from ti.database.connection import get_connection
 
 class MarketDataBaseModel(SQLModel):
-    """數據基礎模型"""
+    """Data base model"""
     
     id: Optional[int] = Field(default=None, primary_key=True)
     symbol: str = Field(max_length=20, index=True)
     interval: str = Field(max_length=10, index=True)
     timestamp: datetime = Field(index=True)
     
-    # OHLCV 數據
+    # OHLCV data
     open: Optional[float] = Field(default=None, sa_column_kwargs={"name": "open"})
     high: Optional[float] = None
     low: Optional[float] = None
     close: Optional[float] = Field(default=None, sa_column_kwargs={"name": "close"})
     volume: Optional[int] = None
     
-    # RSI 指標
+    # RSI indicators
     rsi_5: Optional[float] = None
     rsi_7: Optional[float] = None
     rsi_10: Optional[float] = None
     rsi_14: Optional[float] = None
     rsi_21: Optional[float] = None
     
-    # MACD 指標
+    # MACD indicators
     dif: Optional[float] = None
     macd: Optional[float] = None
     macd_histogram: Optional[float] = None
     
-    # KDJ 指標
+    # KDJ indicators
     rsv: Optional[float] = None
     k_value: Optional[float] = None
     d_value: Optional[float] = None
     j_value: Optional[float] = None
     
-    # MA 指標
+    # MA indicators
     ma5: Optional[float] = None
     ma10: Optional[float] = None
     ma20: Optional[float] = None
     ma60: Optional[float] = None
     
-    # EMA 指標
+    # EMA indicators
     ema12: Optional[float] = None
     ema26: Optional[float] = None
     
-    # 布林通道
+    # Bollinger Bands
     bollinger_upper: Optional[float] = None
     bollinger_middle: Optional[float] = None
     bollinger_lower: Optional[float] = None
     
-    # 其他指標
+    # Other indicators
     atr: Optional[float] = None
     cci: Optional[float] = None
     williams_r: Optional[float] = None
     momentum: Optional[float] = None
     
-    # 型態特徵
+    # Pattern features
     pattern_feature: Optional[str] = Field(default=None, max_length=500)
     
-    # 最後更新時間
+    # Last update time
     last_update: Optional[datetime] = None
 
 
 class StockDataTW(MarketDataBaseModel, table=True):
-    """台灣股市數據表"""
+    """Taiwan stock market data table"""
     __tablename__ = "stock_data_tw"
 
 class StockDataUS(MarketDataBaseModel, table=True):
-    """美國股市數據表"""
+    """US stock market data table"""
     __tablename__ = "stock_data_us"
 
 class Crypto(MarketDataBaseModel, table=True):
-    """加密貨幣數據表"""
+    """Cryptocurrency data table"""
     
 class Index(MarketDataBaseModel, table=True):
-    """指數數據表"""
+    """Index data table"""
     
 class ETF(MarketDataBaseModel, table=True):
-    """ETF數據表"""
+    """ETF data table"""
     
 class Forex(MarketDataBaseModel, table=True):
-    """外匯數據表"""
+    """Forex data table"""
 
 class Futures(MarketDataBaseModel, table=True):
-    """期貨數據表"""
+    """Futures data table"""
 
 
 MARKET_MODELS: dict[str, type[MarketDataBaseModel]] = {
@@ -102,35 +102,35 @@ MARKET_MODELS: dict[str, type[MarketDataBaseModel]] = {
 engine = get_connection()
 
 def get_model_count() -> int:
-    """返回市場模型的數量"""
+    """Return the count of market models"""
     return len(MARKET_MODELS)
 
 def get_model_by_market(market: str) -> type[MarketDataBaseModel]:
-    """根據市場代碼獲取對應的模型"""
+    """Get the corresponding model based on market code"""
     model = MARKET_MODELS.get(market.lower())
     if not model:
-        raise ValueError(f"不支援的市場: {market}. 支援的市場: {', '.join(MARKET_MODELS.keys())}")
+        raise ValueError(f"Unsupported market: {market}. Supported markets: {', '.join(MARKET_MODELS.keys())}")
     return model
 
 def create_tables():
-    """創建所有資料表"""
+    """Create all tables"""
     SQLModel.metadata.create_all(engine)
 
 def create_table_by_market(market: str):
-    """根據市場創建指定的資料表"""
+    """Create specified table based on market"""
     model = get_model_by_market(market)
     model.metadata.create_all(engine)
 
 def drop_tables():
-    """刪除所有資料表"""
+    """Drop all tables"""
     SQLModel.metadata.drop_all(engine)
 
 def drop_table_by_market(market: str):
-    """根據市場刪除指定的資料表"""
+    """Drop specified table based on market"""
     model = get_model_by_market(market)
     model.metadata.drop_all(engine)
 
 def list_all_tables() -> list[str]:
-    """列出資料庫中的所有資料表"""
+    """List all tables in the database"""
     inspector = inspect(engine)
     return inspector.get_table_names()

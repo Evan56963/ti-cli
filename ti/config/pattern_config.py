@@ -4,9 +4,9 @@ from dataclasses import dataclass
 
 @unique
 class PatternType(StrEnum):
-    REVERSAL = "反轉型態"
-    CONTINUATION = "持續型態"
-    NEUTRAL = "中性型態"
+    REVERSAL = "Reversal"
+    CONTINUATION = "Continuation"
+    NEUTRAL = "Neutral"
     
 @dataclass
 class CandlePattern():
@@ -19,9 +19,10 @@ class CandlePattern():
     bearish_name: Optional[str] = None
     description: Optional[str] = None
 
-# K線型態函數與中文註解對應表
+# Candlestick pattern configurations
 CANDLE_PATTERNS: dict[str, CandlePattern] = {
-    # 反轉型態
+
+    # Reversal patterns
     'CDLHAMMER': CandlePattern(
         ta_function='CDLHAMMER', chinese_name='錘頭', pattern_type=PatternType.REVERSAL,
         description="底部反轉訊號，長下影線，小實體"
@@ -39,14 +40,14 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="頂部反轉訊號，長上影線，小實體"
     ),
     
-    # 吞沒型態
+    # Engulfing patterns
     'CDLENGULFING': CandlePattern(
         ta_function='CDLENGULFING', chinese_name='吞沒形態', pattern_type=PatternType.REVERSAL,
         has_direction=True, bullish_name='多頭吞沒', bearish_name='空頭吞沒',
         description="第二根K線完全包含第一根K線"
     ),
     
-    # 晨星/暮星系列
+    # Morning star / Evening star patterns
     'CDLMORNINGSTAR': CandlePattern(
         ta_function='CDLMORNINGSTAR', chinese_name='晨星', pattern_type=PatternType.REVERSAL,
         needs_penetration=True, description="三K線底部反轉型態"
@@ -64,7 +65,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         needs_penetration=True, description="中間為十字線的暮星型態"
     ),
     
-    # 十字線系列
+    # Doji patterns
     'CDLDOJI': CandlePattern(
         ta_function='CDLDOJI', chinese_name='十字', pattern_type=PatternType.NEUTRAL,
         description="開盤價等於收盤價，市場猶豫"
@@ -86,7 +87,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="上下都有長影線的十字線"
     ),
     
-    # 三兵系列
+    # Three soldiers patterns
     'CDL3WHITESOLDIERS': CandlePattern(
         ta_function='CDL3WHITESOLDIERS', chinese_name='三白兵', pattern_type=PatternType.CONTINUATION,
         description="三根連續上漲的陽線"
@@ -104,7 +105,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="兩根下跌陰線，頂部反轉訊號"
     ),
     
-    # 內外包型態
+    # Inside and outside patterns
     'CDL3INSIDE': CandlePattern(
         ta_function='CDL3INSIDE', chinese_name='三內部漲跌', pattern_type=PatternType.REVERSAL,
         has_direction=True, bullish_name='三內部上漲', bearish_name='三內部下跌',
@@ -116,7 +117,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="三K線外包型態"
     ),
     
-    # 孕線系列
+    # Harami patterns
     'CDLHARAMI': CandlePattern(
         ta_function='CDLHARAMI', chinese_name='孕線', pattern_type=PatternType.REVERSAL,
         description="第二根K線被第一根完全包含"
@@ -126,7 +127,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="第二根為十字線的孕線型態"
     ),
     
-    # 光頭光腳系列
+    # Marubozu patterns
     'CDLMARUBOZU': CandlePattern(
         ta_function='CDLMARUBOZU', chinese_name='光頭光腳', pattern_type=PatternType.CONTINUATION,
         has_direction=True, bullish_name='上漲光頭光腳', bearish_name='下跌光頭光腳',
@@ -138,7 +139,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="只有一端沒有影線"
     ),
     
-    # 打擊系列
+    # Strike patterns
     'CDL3LINESTRIKE': CandlePattern(
         ta_function='CDL3LINESTRIKE', chinese_name='三線打擊', pattern_type=PatternType.REVERSAL,
         has_direction=True, bullish_name='三線打擊上漲', bearish_name='三線打擊下跌',
@@ -149,7 +150,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="收盤價相同的反向K線組合"
     ),
     
-    # 三法系列
+    # Three methods patterns
     'CDLRISEFALL3METHODS': CandlePattern(
         ta_function='CDLRISEFALL3METHODS', chinese_name='上升/下降三法', pattern_type=PatternType.CONTINUATION,
         has_direction=True, bullish_name='上升三法', bearish_name='下降三法',
@@ -161,7 +162,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="跳空後的整理型態"
     ),
     
-    # 穿透型態
+    # Piercing patterns
     'CDLPIERCING': CandlePattern(
         ta_function='CDLPIERCING', chinese_name='刺穿形態', pattern_type=PatternType.REVERSAL,
         description="陽線向上穿透前一根陰線的一半以上"
@@ -171,7 +172,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         needs_penetration=True, description="陰線向下穿透前一根陽線的一半以上"
     ),
     
-    # 缺口型態
+    # Gap patterns
     'CDLGAPSIDESIDEWHITE': CandlePattern(
         ta_function='CDLGAPSIDESIDEWHITE', chinese_name='缺口上漲', pattern_type=PatternType.CONTINUATION,
         description="向上跳空的兩根陽線"
@@ -185,7 +186,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="跳空後的並列K線"
     ),
     
-    # 特殊型態
+    # Other special patterns
     'CDLABANDONEDBABY': CandlePattern(
         ta_function='CDLABANDONEDBABY', chinese_name='棄嬰', pattern_type=PatternType.REVERSAL,
         has_direction=True, bullish_name='棄嬰上漲', bearish_name='棄嬰下跌',
@@ -208,7 +209,7 @@ CANDLE_PATTERNS: dict[str, CandlePattern] = {
         description="根據K線長度判斷的反沖型態"
     ),
     
-    # 其他型態
+    # Other notable patterns
     'CDLADVANCEBLOCK': CandlePattern(
         ta_function='CDLADVANCEBLOCK', chinese_name='大敵當前', pattern_type=PatternType.REVERSAL,
         description="三根逐漸縮小的陽線"

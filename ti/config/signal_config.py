@@ -1,4 +1,4 @@
-# 訊號權重常數
+# Signal weights configuration
 SIGNAL_WEIGHTS: dict[str, float] = {
     'MACD_Div': 2.0,
     'MA_Cross': 1.5,

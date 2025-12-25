@@ -22,12 +22,12 @@ PERIOD_MAP = {
     
 
 def get_ticker_with_suffix(ticker: str, market: str) -> str:
-        """根據市場格式化股票代號"""
+        """Format symbol based on market"""
         suffix = SUFFIX_MAP.get(market, "")
         if suffix and not ticker.endswith(suffix):
             return ticker + suffix
         return ticker
 
 def get_period_by_interval(interval: str) -> str:
-        """根據時間間隔設定獲取期間"""
+        """Get period based on time interval setting"""
         return PERIOD_MAP.get(interval, '1y')

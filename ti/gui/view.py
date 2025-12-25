@@ -3,7 +3,7 @@ from .components import InputComponents, OutputComponents, Tag, Market, Interval
 from .controller import Controller
 
 class Gui:
-    """技術指標分析工具圖形介面"""
+    """Technical indicators analysis tool graphical interface"""
 
     def __init__(self):
         self.input_components = InputComponents()
@@ -11,7 +11,7 @@ class Gui:
         self.controller = Controller(self.input_components, self.output_components)
     
     def create_analysis_tab(self):
-        """建立分析頁籤"""
+        """Create analysis tab"""
         with dpg.tab(label="Market Analysis"):
             dpg.add_text("Market Symbols (separate multiple with space):", color=(255, 255, 0))
             dpg.add_input_text(tag=Tag.SYMBOLS_INPUT, hint="e.g., 2330 0050 or AAPL TSLA", width=600)
@@ -57,7 +57,7 @@ class Gui:
                 dpg.add_button(label="Clear Output", callback=self.controller.clear, width=150, height=40)
     
     def create_database_tab(self):
-        """建立資料庫管理頁籤"""
+        """Create database management tab"""
         with dpg.tab(label="Database Management"):
             dpg.add_spacer(height=20)
             dpg.add_text("Database Operations:", color=(255, 255, 0))
@@ -74,7 +74,7 @@ class Gui:
                 dpg.add_text("  Show all created tables")
     
     def create_help_tab(self):
-        """建立說明頁籤"""
+        """Create help tab"""
         with dpg.tab(label="Help"):
             dpg.add_spacer(height=10)
             dpg.add_text("Technical Indicators Analysis System", color=(0, 255, 255))
@@ -99,7 +99,7 @@ class Gui:
             dpg.add_text("  • You can view created tables anytime")
     
     def create_output_section(self):
-        """建立輸出區塊"""
+        """Create output section"""
         dpg.add_spacer(height=10)
         dpg.add_separator()
         dpg.add_spacer(height=10)
@@ -115,7 +115,7 @@ class Gui:
         )
     
     def setup_window(self):
-        """設定主視窗"""
+        """Setup main window"""
         with dpg.window(label="Technical Indicators Analysis Tool", tag=Tag.MAIN_WINDOW, width=980, height=680):
             with dpg.tab_bar():
                 self.create_analysis_tab()
@@ -125,7 +125,7 @@ class Gui:
             self.create_output_section()
     
     def run(self):
-        """啟動GUI"""
+        """Launch GUI"""
         dpg.create_context()
         dpg.create_viewport(title='Technical Indicators Analysis Tool', width=1000, height=700)
         

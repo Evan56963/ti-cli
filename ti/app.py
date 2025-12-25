@@ -1,6 +1,6 @@
 import argparse
 from ti.gui.view import Gui
-from ti.services import StockDataService
+from ti.services import MarketService
 from ti.utils.styles import Color, Style, stylize
 from ti.database import tables
 from ti.log import logger
@@ -11,10 +11,10 @@ def main():
     parser.add_argument('--gui', action='store_true', help='Launch graphical user interface (GUI)')
     parser.add_argument('--help', '-h', action='store_true', help='Show this help message and exit')
 
-    # 建立子命令
+    # Create subcommands
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
 
-    # add 子命令 - 計算技術指標並檢測k線型態
+    # add subcommand - Calculate technical indicators and detect candlestick patterns
     add_parser = subparsers.add_parser('add', help='Calculate technical indicators and detect patterns')
     add_parser.add_argument('symbols', nargs='*', help='Stock symbol list (e.g., 2330 AAPL)')
     add_parser.add_argument('--market','-m', type=str, help='Market type option', choices=['tw', 'two', 'us', 'etf', 'index', 'crypto', 'forex', 'futures'])
@@ -22,7 +22,7 @@ def main():
     add_parser.add_argument('--start', '-s', type=str, help='Start date (YYYY-MM-DD)')
     add_parser.add_argument('--end', '-e', type=str, help='End date (YYYY-MM-DD)')
     
-    # db 子命令 - 資料庫管理
+    # db subcommand - Database management
     db_parser = subparsers.add_parser('db', help='Database management')
     db_parser.add_argument('--init', action='store_true', help='Initialize database and create all tables')
     db_parser.add_argument('--list', '-l', action='store_true', help='List all database tables')
@@ -37,9 +37,9 @@ def main():
         show_help()
         return
     
-    # add 子命令 - 計算技術指標並分析檢測k線型態
+    # add subcommand - Calculate technical indicators and analyze candlestick patterns
     if args.command == 'add':
-        service = StockDataService()
+        service = MarketService()
         
         if not args.symbols:
             logger.warning("Please provide at least one stock symbol")
@@ -78,7 +78,7 @@ def main():
             except:
                 logger.exception(f"✗ Error occurred while processing {symbol}")
     
-    # db 子命令 - 資料庫管理
+    # db subcommand - Database management
     if args.command == 'db':
         if args.init:
             try:

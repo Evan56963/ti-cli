@@ -1,36 +1,39 @@
-from ti.providers import StockDataProvider
+from ti.providers import YahooFinanceFetcher
 from ti.analyzers.indicator_calc import TechnicalIndicatorCalculator
 from ti.analyzers.candle_pattern import CandlePatternDetector
-from ti.database.repositories import StockDataRepository
+from ti.database.repositories import MarketDataRepository
 from ti.utils.helpers import get_ticker_with_suffix, get_period_by_interval
 import pandas as pd
 
-class StockDataService:
-    """股票數據服務"""
+class MarketService:
+    """
+    Responsible for integrating data fetching, technical indicator calculation
+    , and candlestick pattern detection
+    """
 
     def __init__(self):
         self.detector = CandlePatternDetector()
     
     def fetch_and_store(self, symbol: str, market: str, interval: str) -> dict[str, int | str]:
-        """獲取並儲存股票數據和技術指標"""
-        # 格式化股票代號
+        """Fetch and store data and technical indicators"""
+        # Format symbol
         formatted_symbol = get_ticker_with_suffix(symbol, market)
         period = get_period_by_interval(interval)
 
-        # 獲取股票數據
-        stock_data = StockDataProvider.get_stock_data(formatted_symbol, period, interval)
+        # Fetch data
+        stock_data = YahooFinanceFetcher.get_stock_data(formatted_symbol, period, interval)
         
-        # 計算技術指標
+        # Calculate technical indicators
         indicators = TechnicalIndicatorCalculator.calculate_all_indicators(stock_data)
         
-        # 檢測 K 線型態
+        # Detect candlestick patterns
         pattern_features = self.detector.detect_and_combine(stock_data)
         
-        # 合併所有數據
+        # Combine all data
         combined_data = pd.concat([stock_data, indicators, pattern_features], axis=1)
         
-        # 保存數據到資料庫
-        repo = StockDataRepository(market)
+        # Save data to database
+        repo = MarketDataRepository(market)
         saved_count = repo.save_dataframe(combined_data, symbol, interval)
         
         return {
@@ -44,24 +47,25 @@ class StockDataService:
         }
     
     def fetch_and_store_range(self, symbol: str, market: str, interval: str, start_date: str, end_date: str) -> dict[str, int | str]:  
-        """根據日期範圍獲取並儲存股票數據和技術指標"""
-        # 格式化股票代號
+        """Fetch and store data and technical indicators based on date range"""
+
+        # Format symbol
         formatted_symbol = get_ticker_with_suffix(symbol, market)
 
-        # 獲取股票數據
-        stock_data = StockDataProvider.get_stock_data_range(formatted_symbol, start_date, end_date, interval)
+        # Fetch data
+        stock_data = YahooFinanceFetcher.get_stock_data_range(formatted_symbol, start_date, end_date, interval)
         
-        # 計算技術指標
+        # Calculate technical indicators
         indicators = TechnicalIndicatorCalculator.calculate_all_indicators(stock_data)
         
-        # 檢測 K 線型態
+        # Detect candlestick patterns
         pattern_features = self.detector.detect_and_combine(stock_data)
             
-        # 合併所有數據
+        # Combine all data
         combined_data = pd.concat([stock_data, indicators, pattern_features], axis=1)
         
-        # 保存數據到資料庫
-        repo = StockDataRepository(market)
+        # Save data to database
+        repo = MarketDataRepository(market)
         saved_count = repo.save_dataframe(combined_data, symbol, interval)
         
         return {
@@ -75,4 +79,4 @@ class StockDataService:
         }
 
 class SignalService:
-    """交易信號服務"""
+    """Trading signal service"""

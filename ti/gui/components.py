@@ -41,38 +41,38 @@ class Interval(Enum):
 
 
 class InputComponents:
-    """輸入元件"""
+    """Input components"""
     
     def get_symbols(self) -> list[str]:
-        """獲取股票代碼列表"""
+        """Get stock symbol list"""
         symbols_text = dpg.get_value(Tag.SYMBOLS_INPUT)
         return [s.strip() for s in symbols_text.split() if s.strip()]
     
     def get_market(self) -> str | None:
-        """獲取選擇的市場"""
+        """Get selected market"""
         market_selection = dpg.get_value(Tag.MARKET_RADIO)
         return next((m.value.value for m in Market if m.value.label == market_selection), None)
     
     def get_interval(self) -> str | None:
-        """獲取選擇的時間間隔"""
+        """Get selected time interval"""
         interval_selection = dpg.get_value(Tag.INTERVAL_RADIO)
         return next((i.value.value for i in Interval if i.value.label == interval_selection), None)
     
     def get_date_range(self) -> tuple[str, str]:
-        """獲取日期範圍"""
+        """Get date range"""
         start_date = dpg.get_value(Tag.START_DATE)
         end_date = dpg.get_value(Tag.END_DATE)
         return start_date, end_date
 
 
 class OutputComponents:
-    """輸出元件"""
+    """Output components"""
     
     def clear(self):
-        """清空輸出文字"""
+        """Clear output text"""
         dpg.set_value(Tag.OUTPUT_TEXT, "")
     
     def append(self, text: str):
-        """追加輸出文字"""
+        """Append output text"""
         current = dpg.get_value(Tag.OUTPUT_TEXT)
         dpg.set_value(Tag.OUTPUT_TEXT, f"{current}{text}\n")

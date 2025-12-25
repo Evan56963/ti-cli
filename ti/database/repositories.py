@@ -10,15 +10,15 @@ if TYPE_CHECKING:
 
 engine = get_connection()
 
-class StockDataRepository:
-    """股票數據儲存庫 - 負責資料的增刪查改"""
+class MarketDataRepository:
+    """Market data repository - Responsible for CRUD operations on data"""
     
     def __init__(self, market: str):
         self.market = market.lower()
         self.model : type[MarketDataBaseModel] = get_model_by_market(self.market)
     
-    def save_dataframe(self, df: pd.DataFrame, symbol: str, interval: str) -> int:
-        """儲存資料到資料庫"""
+    def save_market_data(self, df: pd.DataFrame, symbol: str, interval: str) -> int:
+        """Save OHLCV, technical indicator, and candlestick pattern data to database"""
         saved_count = 0
         
         with Session(engine) as session:
@@ -67,7 +67,7 @@ class StockDataRepository:
         return saved_count
     
     def create(self, session: Session, stock_data: MarketDataBaseModel):
-        """新增單筆股票數據"""
+        """Add single data record"""
         stock_data.last_update = datetime.now()
         session.add(stock_data)
         session.commit()
@@ -75,7 +75,7 @@ class StockDataRepository:
         
 
     def get_by_symbol_datetime(self, session: Session, symbol: str, date: datetime, interval: str) -> Optional[MarketDataBaseModel]:
-        """根據股票代碼、時間和間隔查詢"""
+        """Query by symbol, time and interval"""
         statement = select(self.model).where(
             self.model.symbol == symbol,
             self.model.timestamp == date,
@@ -85,7 +85,7 @@ class StockDataRepository:
     
 
     def upsert(self, session: Session, stock_data: MarketDataBaseModel):
-        """新增或更新股票數據"""
+        """Insert or update data"""
         existing = self.get_by_symbol_datetime(
             session,
             stock_data.symbol, 
@@ -94,7 +94,7 @@ class StockDataRepository:
         )
         
         if existing:
-            # 更新現有記錄
+            # Update existing record
             for key, value in stock_data.dict(exclude={'id'}).items():
                 if value is not None:
                     setattr(existing, key, value)
@@ -102,5 +102,5 @@ class StockDataRepository:
             session.commit()
             session.refresh(existing)
         else:
-            # 新增記錄
+            # Insert new record
             self.create(session, stock_data)
