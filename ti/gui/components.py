@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Enum, StrEnum, unique
 from dearpygui import dearpygui as dpg
 
+@unique
 class Tag(StrEnum):
     SYMBOLS_INPUT = "symbols_input"
     MARKET_RADIO = "market_radio"

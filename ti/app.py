@@ -17,12 +17,10 @@ def main():
     # add 子命令 - 計算技術指標並檢測k線型態
     add_parser = subparsers.add_parser('add', help='Calculate technical indicators and detect patterns')
     add_parser.add_argument('symbols', nargs='*', help='Stock symbol list (e.g., 2330 AAPL)')
+    add_parser.add_argument('--market','-m', type=str, help='Market type option', choices=['tw', 'two', 'us', 'etf', 'index', 'crypto', 'forex', 'futures'])
+    add_parser.add_argument('--interval','-i', type=str, help='Time interval option', choices=['1m', '5m', '15m', '30m', '1h', '1d', '1wk', '1mo'])
     add_parser.add_argument('--start', '-s', type=str, help='Start date (YYYY-MM-DD)')
     add_parser.add_argument('--end', '-e', type=str, help='End date (YYYY-MM-DD)')
-    add_parser.add_argument('--market','-m', type=str, help='Market type option', 
-                            choices=['tw', 'two', 'us', 'etf', 'index', 'crypto', 'forex', 'futures'])
-    add_parser.add_argument('--interval','-i', type=str, help='Time interval option',  
-                            choices=['1m', '5m', '15m', '30m', '1h', '1d', '1wk', '1mo'])
     
     # db 子命令 - 資料庫管理
     db_parser = subparsers.add_parser('db', help='Database management')

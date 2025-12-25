@@ -1,10 +1,11 @@
 import logging
 from typing import override
-from ti.utils.styles import Color, stylize, BgColor
+from ti.utils.styles import Color, stylize, BgColor, Style
 
 class ColoredFormatter(logging.Formatter):
-
-    LEVEL_COLOR_MAP: dict[int, Color] = {
+    """Customized logging formatter with colors based on log level."""
+    
+    LEVEL_COLOR_MAP: dict[int, Color | BgColor | Style] = {
         logging.DEBUG: Color.BRIGHT_WHITE + BgColor.BRIGHT_BLUE,
         logging.INFO: Color.BRIGHT_WHITE + BgColor.BRIGHT_GREEN,
         logging.WARNING: Color.BRIGHT_WHITE + BgColor.YELLOW,

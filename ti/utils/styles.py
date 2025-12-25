@@ -51,5 +51,5 @@ class BgColor(StrEnum):
     BRIGHT_CYAN = '\033[106m'
     BRIGHT_WHITE = '\033[107m'
 
-def stylize(text: str, color: Color | BgColor | Style) -> str:
-    return f"{color}{text}{Style.RESET}"
+def stylize(text: str, *styles: Color | BgColor | Style) -> str:
+    return f"{''.join(styles)}{text}{Style.RESET}"
