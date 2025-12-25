@@ -178,7 +178,7 @@ def show_help():
     print(help_text)
 
 if __name__ == "__main__":
-    """This is for running the application directly.
+    """
     Usage:
         python -m ti.app [--gui] [--help]
         python -m ti.app add <symbols> -m <market> -i <interval> [--start <date>] [--end <date>]
