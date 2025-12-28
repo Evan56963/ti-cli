@@ -34,7 +34,7 @@ class MarketService:
         
         # Save data to database
         repo = MarketDataRepository(market)
-        saved_count = repo.save_dataframe(combined_data, symbol, interval)
+        saved_count = repo.save_market_data(combined_data, symbol, interval)
         
         return {
             'symbol': symbol,
@@ -66,7 +66,7 @@ class MarketService:
         
         # Save data to database
         repo = MarketDataRepository(market)
-        saved_count = repo.save_dataframe(combined_data, symbol, interval)
+        saved_count = repo.save_market_data(combined_data, symbol, interval)
         
         return {
             'symbol': symbol,

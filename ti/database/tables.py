@@ -100,6 +100,7 @@ MARKET_MODELS: dict[str, type[MarketDataBaseModel]] = {
 }
 
 engine = get_connection()
+inspector = inspect(engine)
 
 def get_model_count() -> int:
     """Return the count of market models"""
@@ -132,5 +133,4 @@ def drop_table_by_market(market: str):
 
 def list_all_tables() -> list[str]:
     """List all tables in the database"""
-    inspector = inspect(engine)
     return inspector.get_table_names()
