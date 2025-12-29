@@ -102,10 +102,6 @@ MARKET_MODELS: dict[str, type[MarketDataBaseModel]] = {
 engine = get_connection()
 inspector = inspect(engine)
 
-def get_model_count() -> int:
-    """Return the count of market models"""
-    return len(MARKET_MODELS)
-
 def get_model_by_market(market: str) -> type[MarketDataBaseModel]:
     """Get the corresponding model based on market code"""
     model = MARKET_MODELS.get(market.lower())
@@ -131,6 +127,6 @@ def drop_table_by_market(market: str):
     model = get_model_by_market(market)
     model.metadata.drop_all(engine)
 
-def list_all_tables() -> list[str]:
-    """List all tables in the database"""
+def get_tables() -> list[str]:
+    """Get all tables in the database"""
     return inspector.get_table_names()

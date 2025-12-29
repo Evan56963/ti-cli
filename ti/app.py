@@ -156,19 +156,19 @@ def main():
     # db subcommand - Database management
     if args.command == 'db':
 
+        table = tables.get_tables()
+
         if args.init:
             try:
                 logger.info("Initializing database...")
                 tables.create_tables()
                 logger.info(f"✓ Database initialized successfully")
-                logger.info(f"  Created {tables.get_model_count()} market tables")
+                logger.info(f"  Created {len(table)} market tables")
             except:
                 logger.exception("✗ Database initialization failed")
         
         elif args.list:
             try:
-                table = tables.list_all_tables()
-                
                 if table:
                     logger.info(f"Database tables ({len(table)} tables):")
                     for i, table in enumerate(table, 1):
