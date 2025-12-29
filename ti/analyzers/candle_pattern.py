@@ -3,11 +3,11 @@ import talib
 from ti.config.pattern_config import CANDLE_PATTERNS
 
 class CandlePatternDetector:
-    """K線形態檢測器 - 負責檢測K線圖中的特定形態"""
+    """Candlestick pattern detector - Responsible for detecting specific patterns in candlestick charts"""
     
     @staticmethod
     def detect_patterns(data: pd.DataFrame) -> pd.DataFrame:
-        """檢測所有 K 線型態"""
+        """Detect all candlestick patterns"""
 
         open_ = data['Open'].values
         high_ = data['High'].values
@@ -29,9 +29,9 @@ class CandlePatternDetector:
         
         return result_df
     
-    @staticmethod
-    def combine_patterns(row: pd.Series) -> str:
-        """將檢測到的型態組合成字串"""              
+    
+    def combine_patterns(self, row: pd.Series) -> str:
+        """Combine detected patterns into a string"""              
 
         signals = []
         
@@ -41,7 +41,7 @@ class CandlePatternDetector:
             if val == 0:
                 continue
             
-            # 判斷是否有方向性
+            # Check if it has direction
             if pattern_config.has_direction:
                 if val > 0 and pattern_config.bullish_name:
                     signals.append(pattern_config.bullish_name)
@@ -54,8 +54,10 @@ class CandlePatternDetector:
         
         return ','.join(signals) if signals else ''
     
-    @staticmethod
-    def detect_and_combine(df: pd.DataFrame) -> pd.Series:
-        """檢測型態並組合成字串"""
-        pattern_df = CandlePatternDetector.detect_patterns(df)
-        return pattern_df.apply(CandlePatternDetector.combine_patterns, axis=1)
+
+    def detect_and_combine(self,df: pd.DataFrame) -> pd.Series:
+        """Detect patterns and combine into a string"""
+        pattern_df = self.detect_patterns(df)
+        pattern_futures =pattern_df.apply(self.combine_patterns, axis=1)
+        pattern_futures.name = 'pattern_feature'
+        return pattern_futures
