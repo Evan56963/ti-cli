@@ -21,13 +21,14 @@ class ColoredFormatter(logging.Formatter):
     
     @override
     def format(self, record: logging.LogRecord) -> str:
-        color = self.LEVEL_COLOR_MAP.get(record.levelno, Color.WHITE)
-        record.name = stylize(record.name, Color.CYAN)
-        record.levelname = stylize(record.levelname, color)
-        record.msg = stylize(record.msg, Color.WHITE)
-        
-        return super().format(record)
+        record_copy = logging.makeLogRecord(record.__dict__.copy())
 
+        color = self.LEVEL_COLOR_MAP.get(record.levelno, Color.WHITE)
+        record_copy.name = stylize(record.name, Color.CYAN)
+        record_copy.levelname = stylize(record.levelname, color)
+        record_copy.msg = stylize(record.msg, Color.WHITE)
+
+        return super().format(record_copy)
 
 logger = logging.getLogger("ti")
 logger.setLevel(logging.DEBUG)
@@ -35,6 +36,11 @@ stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.INFO)
 stream_handler.setFormatter(
     ColoredFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+)
+file_handler = logging.FileHandler("ti.log", mode='w')
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(
+    logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 )
 
 yf_logger = logging.getLogger("yfinance")
@@ -46,14 +52,9 @@ yf_stream_handler.setFormatter(
 )
 
 logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
 yf_logger.addHandler(yf_stream_handler)
 
 
-# file_handler = logging.FileHandler("ti.log", mode='a')
-# file_handler.setLevel(logging.DEBUG)
-# file_handler.setFormatter(
-#     logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-# )
 
-# logger.addHandler(file_handler)
 # print(logging.Logger.manager.loggerDict.keys())
