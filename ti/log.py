@@ -37,7 +37,7 @@ stream_handler.setLevel(logging.INFO)
 stream_handler.setFormatter(
     ColoredFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 )
-file_handler = logging.FileHandler("ti.log", mode='w')
+file_handler = logging.FileHandler("ti.log", mode='a')
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(
     logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -50,11 +50,16 @@ yf_stream_handler.setLevel(logging.WARNING)
 yf_stream_handler.setFormatter(
     ColoredFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 )
+yf_file_handler = logging.FileHandler("ti.log", mode='a')
+yf_file_handler.setLevel(logging.WARNING)
+yf_file_handler.setFormatter(
+    logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+)
 
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
 yf_logger.addHandler(yf_stream_handler)
-
+yf_logger.addHandler(yf_file_handler)
 
 
 # print(logging.Logger.manager.loggerDict.keys())
