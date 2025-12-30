@@ -14,7 +14,7 @@ class MarketService:
     def __init__(self):
         self.detector = CandlePatternDetector()
     
-    def fetch_and_store(self, symbol: str, market: str, interval: str) -> dict[str, int | str]:
+    def fetch_and_store(self, symbol: str, market: str, interval: str, mode: str) -> dict[str, int | str]:
         """Fetch and store data and technical indicators"""
         # Format symbol
         formatted_symbol = get_ticker_with_suffix(symbol, market)
@@ -32,9 +32,12 @@ class MarketService:
         # Combine all data
         combined_data = pd.concat([stock_data, indicators, pattern_features], axis=1)
         
-        # Save data to database
-        repo = MarketDataRepository(market)
-        saved_count = repo.save_market_data(combined_data, symbol, interval)
+        if mode=='save':
+            # Save data to database
+            repo = MarketDataRepository(market)
+            saved_count = repo.save_market_data(combined_data, symbol, interval)
+        else:
+            saved_count = 0
         
         return {
             'symbol': symbol,
@@ -43,10 +46,11 @@ class MarketService:
             'data_count': len(stock_data),
             'indicator_count': len(indicators.columns),
             'pattern_count': (pattern_features != '').sum(),
-            'saved_count': saved_count
+            'saved_count': saved_count,
+            'combined_data': combined_data
         }
     
-    def fetch_and_store_range(self, symbol: str, market: str, interval: str, start_date: str, end_date: str) -> dict[str, int | str]:  
+    def fetch_and_store_range(self, symbol: str, market: str, interval: str, start_date: str, end_date: str, mode: str) -> dict[str, int | str]:  
         """Fetch and store data and technical indicators based on date range"""
 
         # Format symbol
@@ -64,9 +68,12 @@ class MarketService:
         # Combine all data
         combined_data = pd.concat([stock_data, indicators, pattern_features], axis=1)
         
-        # Save data to database
-        repo = MarketDataRepository(market)
-        saved_count = repo.save_market_data(combined_data, symbol, interval)
+        if mode=='save':
+            # Save data to database
+            repo = MarketDataRepository(market)
+            saved_count = repo.save_market_data(combined_data, symbol, interval)
+        else:
+            saved_count = 0
         
         return {
             'symbol': symbol,
@@ -75,7 +82,8 @@ class MarketService:
             'data_count': len(stock_data),
             'indicator_count': len(indicators.columns),
             'pattern_count': (pattern_features != '').sum(),
-            'saved_count': saved_count
+            'saved_count': saved_count,
+            'combined_data': combined_data
         }
 
 class SignalService:
