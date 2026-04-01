@@ -11,6 +11,9 @@ class Tag(StrEnum):
     END_DATE = "end_date"
     OUTPUT_TEXT = "output_text"
     MAIN_WINDOW = "main_window"
+    MSG_CENTER_TABLE = "msg_center_table"
+    MSG_PAGE_INFO = "msg_page_info"
+    MSG_NO_DATA_TEXT = "msg_no_data_text"
 
 @dataclass
 class Option:

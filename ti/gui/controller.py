@@ -1,6 +1,8 @@
 from ti.services import MarketService
 from ti.database import tables
-from typing import TYPE_CHECKING
+from ti.history_msg import HistoryMsg, HistoryMsgList
+from typing import TYPE_CHECKING, Callable
+import uuid
 
 if TYPE_CHECKING:
     from .components import InputComponents, OutputComponents
@@ -12,6 +14,25 @@ class Controller:
     def __init__(self, input_components: InputComponents, output_components: OutputComponents):
         self.input = input_components
         self.output = output_components
+        self.msg_list = HistoryMsgList()
+        self._refresh_msg_center: Callable[[], None] | None = None
+
+    def set_msg_center_refresh(self, callback: Callable[[], None]) -> None:
+        """Register a callback to refresh the message center UI."""
+        self._refresh_msg_center = callback
+
+    def _add_history_msg(self, msg_guid: str, is_real: bool, importance: str, is_use: str, is_read: bool) -> None:
+        msg = HistoryMsg(
+            uuid=str(uuid.uuid4()),
+            msgGUID=msg_guid,
+            isReal=is_real,
+            importance=importance,
+            isUse=is_use,
+            isRead=is_read,
+        )
+        self.msg_list.add(msg)
+        if self._refresh_msg_center:
+            self._refresh_msg_center()
 
     def append(self, text: str):
         self.output.append(text)
@@ -44,7 +65,7 @@ class Controller:
         
         return True
     
-    def process_single_symbol(self,symbol, market, interval, start_date, end_date):
+    def process_single_symbol(self, symbol, market, interval, start_date, end_date):
         """Process single stock symbol"""
         try:
             self.output.append(f"\nProcessing {symbol} ({market}, {interval})...")
@@ -60,9 +81,22 @@ class Controller:
             self.output.append(f"  Calculated {result['indicator_count']} technical indicators")
             self.output.append(f"  Detected {result['pattern_count']} candlestick patterns")
             self.output.append(f"  Data saved to {market} table")
-            
+            self._add_history_msg(
+                msg_guid=f"{symbol}-{market}-{interval}",
+                is_real=True,
+                importance='0',
+                is_use='1',
+                is_read=False,
+            )
         except Exception as e:
             self.output.append(f"✗ Error processing {symbol}: {str(e)}")
+            self._add_history_msg(
+                msg_guid=f"{symbol}-{market}-{interval}",
+                is_real=True,
+                importance='2',
+                is_use='3',
+                is_read=False,
+            )
     
     def analyze_stocks(self):
         """Execute stock analysis"""
@@ -101,3 +135,27 @@ class Controller:
                 self.output.append("No tables in database, please initialize first")
         except Exception as e:
             self.output.append(f"✗ Failed to query tables: {str(e)}")
+
+    def msg_center_first_page(self) -> None:
+        """Navigate to first page of message center"""
+        self.msg_list.go_to_first()
+        if self._refresh_msg_center:
+            self._refresh_msg_center()
+
+    def msg_center_prev_page(self) -> None:
+        """Navigate to previous page of message center"""
+        self.msg_list.go_to_prev()
+        if self._refresh_msg_center:
+            self._refresh_msg_center()
+
+    def msg_center_next_page(self) -> None:
+        """Navigate to next page of message center"""
+        self.msg_list.go_to_next()
+        if self._refresh_msg_center:
+            self._refresh_msg_center()
+
+    def msg_center_last_page(self) -> None:
+        """Navigate to last page of message center"""
+        self.msg_list.go_to_last()
+        if self._refresh_msg_center:
+            self._refresh_msg_center()
